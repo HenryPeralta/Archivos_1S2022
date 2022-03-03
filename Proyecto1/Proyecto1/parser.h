@@ -51,20 +51,21 @@ extern int yydebug;
   {
     tk_igual = 258,
     tk_mkdisk = 259,
-    tk_size = 260,
-    tk_fit = 261,
-    tk_unit = 262,
-    tk_path = 263,
-    tk_ruta = 264,
-    tk_numero = 265,
-    tk_identificador = 266,
-    tk_cadena = 267,
-    tk_kilo = 268,
-    tk_mega = 269,
-    tk_bf = 270,
-    tk_ff = 271,
-    tk_wf = 272,
-    tk_archivo = 273
+    tk_rmdisk = 260,
+    tk_size = 261,
+    tk_fit = 262,
+    tk_unit = 263,
+    tk_path = 264,
+    tk_ruta = 265,
+    tk_numero = 266,
+    tk_identificador = 267,
+    tk_cadena = 268,
+    tk_kilo = 269,
+    tk_mega = 270,
+    tk_bf = 271,
+    tk_ff = 272,
+    tk_wf = 273,
+    tk_archivo = 274
   };
 #endif
 
@@ -79,7 +80,7 @@ union YYSTYPE
   class Nodo_arbol *tipo_nodo;
 
 
-#line 83 "parser.h"
+#line 84 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

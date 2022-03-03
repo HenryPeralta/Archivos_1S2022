@@ -21,6 +21,8 @@
 
 //COMANDO MKDISK
 #include "coman_mkdisk.h"
+//COMANDO RMDISK
+#include "coman_rmdisk.h"
 
 using namespace std;
 
@@ -80,8 +82,14 @@ void recorrer_ast(Nodo_arbol *raiz){
         mkdisk->recorrido_mkdisk(&temp);
         break;
     }
+    case RMDISK:{
+        Nodo_arbol temp = raiz->hijos.at(0);
+        coman_rmdisk *rmdisk = new coman_rmdisk();
+        rmdisk->recorrido_rmdisk(&temp);
+        break;
+    }
     default:{
-        cout<<"Error comando no reconocido"<<endl;
+        cout<<"Error: comando no reconocido"<<endl;
         break;
     }
     }

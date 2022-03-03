@@ -9,6 +9,7 @@ CONFIG -= app_bundle
 
 SOURCES += \
         coman_mkdisk.cpp \
+        coman_rmdisk.cpp \
         estructuras.cpp \
         graficar.cpp \
         main.cpp \
@@ -27,6 +28,7 @@ DISTFILES += \
 
 HEADERS += \
     coman_mkdisk.h \
+    coman_rmdisk.h \
     estructuras.h \
     graficar.h \
     nodo_arbol.h \

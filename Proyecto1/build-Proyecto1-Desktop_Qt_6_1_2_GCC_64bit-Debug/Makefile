@@ -53,6 +53,7 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../Proyecto1/coman_mkdisk.cpp \
+		../Proyecto1/coman_rmdisk.cpp \
 		../Proyecto1/estructuras.cpp \
 		../Proyecto1/graficar.cpp \
 		../Proyecto1/main.cpp \
@@ -60,6 +61,7 @@ SOURCES       = ../Proyecto1/coman_mkdisk.cpp \
 		../Proyecto1/parser.cpp \
 		../Proyecto1/scanner.cpp 
 OBJECTS       = coman_mkdisk.o \
+		coman_rmdisk.o \
 		estructuras.o \
 		graficar.o \
 		main.o \
@@ -207,11 +209,13 @@ DIST          = ../Proyecto1/lexico.l \
 		/home/henry/Qt/6.1.2/gcc_64/mkspecs/features/yacc.prf \
 		/home/henry/Qt/6.1.2/gcc_64/mkspecs/features/lex.prf \
 		../Proyecto1/Proyecto1.pro ../Proyecto1/coman_mkdisk.h \
+		../Proyecto1/coman_rmdisk.h \
 		../Proyecto1/estructuras.h \
 		../Proyecto1/graficar.h \
 		../Proyecto1/nodo_arbol.h \
 		../Proyecto1/parser.h \
 		../Proyecto1/scanner.h ../Proyecto1/coman_mkdisk.cpp \
+		../Proyecto1/coman_rmdisk.cpp \
 		../Proyecto1/estructuras.cpp \
 		../Proyecto1/graficar.cpp \
 		../Proyecto1/main.cpp \
@@ -525,8 +529,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/henry/Qt/6.1.2/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Proyecto1/coman_mkdisk.h ../Proyecto1/estructuras.h ../Proyecto1/graficar.h ../Proyecto1/nodo_arbol.h ../Proyecto1/parser.h ../Proyecto1/scanner.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Proyecto1/coman_mkdisk.cpp ../Proyecto1/estructuras.cpp ../Proyecto1/graficar.cpp ../Proyecto1/main.cpp ../Proyecto1/nodo_arbol.cpp ../Proyecto1/parser.cpp ../Proyecto1/scanner.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Proyecto1/coman_mkdisk.h ../Proyecto1/coman_rmdisk.h ../Proyecto1/estructuras.h ../Proyecto1/graficar.h ../Proyecto1/nodo_arbol.h ../Proyecto1/parser.h ../Proyecto1/scanner.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Proyecto1/coman_mkdisk.cpp ../Proyecto1/coman_rmdisk.cpp ../Proyecto1/estructuras.cpp ../Proyecto1/graficar.cpp ../Proyecto1/main.cpp ../Proyecto1/nodo_arbol.cpp ../Proyecto1/parser.cpp ../Proyecto1/scanner.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -790,6 +794,9 @@ coman_mkdisk.o: ../Proyecto1/coman_mkdisk.cpp ../Proyecto1/coman_mkdisk.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QList \
 		../Proyecto1/estructuras.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coman_mkdisk.o ../Proyecto1/coman_mkdisk.cpp
+
+coman_rmdisk.o: ../Proyecto1/coman_rmdisk.cpp ../Proyecto1/coman_rmdisk.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coman_rmdisk.o ../Proyecto1/coman_rmdisk.cpp
 
 estructuras.o: ../Proyecto1/estructuras.cpp ../Proyecto1/estructuras.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QString \
@@ -1275,7 +1282,7 @@ parser.o: ../Proyecto1/parser.cpp ../Proyecto1/scanner.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qutf8stringview.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringtokenizer.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringbuilder.h \
-		../Proyecto1/nodo_arbol.h \
+		../Proyecto1/estructuras.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QObject \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobject.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobjectdefs.h \
@@ -1303,6 +1310,7 @@ parser.o: ../Proyecto1/parser.cpp ../Proyecto1/scanner.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qproperty.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qshareddata.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpropertyprivate.h \
+		../Proyecto1/nodo_arbol.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QList
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parser.o ../Proyecto1/parser.cpp
 

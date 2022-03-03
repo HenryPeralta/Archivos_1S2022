@@ -20,10 +20,8 @@ public:
     void recorrido_mkdisk(Nodo_arbol*);
     //ejecutar comandos
     void ejecutarDisco(int psize, string pfit, string punit, QString ppath);
-    void crearDisco(QString ppath);
-    QString obtenerPath(QString);
-    QString nombreArchivo(QString);
-    string replaceAll(std::string str, const std::string& from, const std::string& to);
+    void creandoRuta(QString ppath);
+    QString obtener_path(QString);
 };
 
 #endif // COMAN_MKDISK_H

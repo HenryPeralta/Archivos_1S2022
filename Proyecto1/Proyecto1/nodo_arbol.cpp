@@ -16,7 +16,7 @@ int Nodo_arbol::getTipo(){
     if(this->tipo == "MKDISK"){
         return 1;
     }
-    if(this->tipo == "PARAMETRO"){
+    if(this->tipo == "path"){
         return 2;
     }
     if(this->tipo == "fit"){
@@ -28,7 +28,7 @@ int Nodo_arbol::getTipo(){
     if(this->tipo == "size"){
         return 5;
     }
-    if(this->tipo == "path"){
+    if(this->tipo == "PARAMETRO"){
         return 6;
     }
     if(this->tipo == "ajuste"){
@@ -36,6 +36,9 @@ int Nodo_arbol::getTipo(){
     }
     if(this->tipo == "unidad"){
         return 8;
+    }
+    if(this->tipo == "RMDISK"){
+        return 9;
     }
     return 0;
 }

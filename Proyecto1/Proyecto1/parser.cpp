@@ -81,7 +81,7 @@
     #include <cstring>
     #include <vector>
     //#include "lista_simple.h"
-    //#include "estructuras.h"
+    #include "estructuras.h"
     #include "nodo_arbol.h"
 
     extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
@@ -151,20 +151,21 @@ extern int yydebug;
   {
     tk_igual = 258,
     tk_mkdisk = 259,
-    tk_size = 260,
-    tk_fit = 261,
-    tk_unit = 262,
-    tk_path = 263,
-    tk_ruta = 264,
-    tk_numero = 265,
-    tk_identificador = 266,
-    tk_cadena = 267,
-    tk_kilo = 268,
-    tk_mega = 269,
-    tk_bf = 270,
-    tk_ff = 271,
-    tk_wf = 272,
-    tk_archivo = 273
+    tk_rmdisk = 260,
+    tk_size = 261,
+    tk_fit = 262,
+    tk_unit = 263,
+    tk_path = 264,
+    tk_ruta = 265,
+    tk_numero = 266,
+    tk_identificador = 267,
+    tk_cadena = 268,
+    tk_kilo = 269,
+    tk_mega = 270,
+    tk_bf = 271,
+    tk_ff = 272,
+    tk_wf = 273,
+    tk_archivo = 274
   };
 #endif
 
@@ -179,7 +180,7 @@ union YYSTYPE
   class Nodo_arbol *tipo_nodo;
 
 
-#line 183 "parser.cpp"
+#line 184 "parser.cpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -496,21 +497,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  10
+#define YYFINAL  12
 /* YYLAST -- Last index in YYTABLE.  */
 #define YYLAST   23
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  19
+#define YYNTOKENS  20
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  7
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  15
+#define YYNRULES  17
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  26
+#define YYNSTATES  31
 
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   273
+#define YYMAXUTOK   274
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -549,15 +550,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18
+      15,    16,    17,    18,    19
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    90,    90,    95,   102,   106,   112,   116,   120,   123,
-     126,   131,   134,   137,   142,   145
+       0,    91,    91,    96,   100,   105,   112,   116,   122,   126,
+     130,   133,   136,   141,   144,   147,   152,   155
 };
 #endif
 
@@ -566,8 +567,8 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "tk_igual", "tk_mkdisk", "tk_size",
-  "tk_fit", "tk_unit", "tk_path", "tk_ruta", "tk_numero",
+  "$end", "error", "$undefined", "tk_igual", "tk_mkdisk", "tk_rmdisk",
+  "tk_size", "tk_fit", "tk_unit", "tk_path", "tk_ruta", "tk_numero",
   "tk_identificador", "tk_cadena", "tk_kilo", "tk_mega", "tk_bf", "tk_ff",
   "tk_wf", "tk_archivo", "$accept", "I", "CONTENIDO", "LPARAMETROS",
   "PARAMETROS", "AJUSTE", "UNIDADES", YY_NULLPTR
@@ -580,11 +581,11 @@ static const char *const yytname[] =
 static const yytype_int16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,   271,   272,   273
+     265,   266,   267,   268,   269,   270,   271,   272,   273,   274
 };
 # endif
 
-#define YYPACT_NINF (-8)
+#define YYPACT_NINF (-7)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -598,9 +599,10 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       0,    -5,    12,    -8,    10,    11,    13,    14,    -5,    -8,
-      -8,     5,    -6,    -7,    -4,    -8,    -8,    -8,    -8,    -8,
-      -8,    -8,    -8,    -8,    -8,    -8
+       6,    -6,    -2,     4,    -7,     9,    15,    16,    17,    -6,
+      -7,    18,    -7,    11,    -3,     2,    -5,    -7,    -4,    -7,
+      -7,    -7,    -7,    -7,    -7,    -7,    -7,    -7,    -7,    -7,
+      -7
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -608,21 +610,22 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     2,     0,     0,     0,     0,     3,     5,
-       1,     0,     0,     0,     0,     4,     8,    11,    12,    13,
-       6,    14,    15,     7,     9,    10
+       0,     0,     0,     0,     2,     0,     0,     0,     0,     3,
+       7,     0,     1,     0,     0,     0,     0,     6,     0,    10,
+      13,    14,    15,     8,    16,    17,     9,    11,    12,     4,
+       5
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -8,    -8,    -8,    -8,    15,    -8,    -8
+      -7,    -7,    -7,    -7,    14,    -7,    -7
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     3,     8,     9,    20,    23
+      -1,     3,     4,     9,    10,    23,    26
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -630,39 +633,40 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       4,     5,     6,     7,     1,    24,    21,    22,    25,    17,
-      18,    19,    10,    11,    12,    16,    13,    14,     0,     0,
-       0,     0,     0,    15
+       5,     6,     7,     8,    12,    27,    29,    11,    28,    30,
+       1,     2,    13,    20,    21,    22,    24,    25,    14,    15,
+      16,    18,    19,    17
 };
 
 static const yytype_int8 yycheck[] =
 {
-       5,     6,     7,     8,     4,     9,    13,    14,    12,    15,
-      16,    17,     0,     3,     3,    10,     3,     3,    -1,    -1,
-      -1,    -1,    -1,     8
+       6,     7,     8,     9,     0,    10,    10,     9,    13,    13,
+       4,     5,     3,    16,    17,    18,    14,    15,     3,     3,
+       3,     3,    11,     9
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     4,    20,    21,     5,     6,     7,     8,    22,    23,
-       0,     3,     3,     3,     3,    23,    10,    15,    16,    17,
-      24,    13,    14,    25,     9,    12
+       0,     4,     5,    21,    22,     6,     7,     8,     9,    23,
+      24,     9,     0,     3,     3,     3,     3,    24,     3,    11,
+      16,    17,    18,    25,    14,    15,    26,    10,    13,    10,
+      13
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    19,    20,    21,    22,    22,    23,    23,    23,    23,
-      23,    24,    24,    24,    25,    25
+       0,    20,    21,    22,    22,    22,    23,    23,    24,    24,
+      24,    24,    24,    25,    25,    25,    26,    26
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     2,     2,     1,     3,     3,     3,     3,
-       3,     1,     1,     1,     1,     1
+       0,     2,     1,     2,     4,     4,     2,     1,     3,     3,
+       3,     3,     3,     1,     1,     1,     1,     1
 };
 
 
@@ -1358,125 +1362,144 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 90 "parser.y"
+#line 91 "parser.y"
             {
         raiz = (yyval.tipo_nodo);
   }
-#line 1366 "parser.cpp"
+#line 1370 "parser.cpp"
     break;
 
   case 3:
-#line 95 "parser.y"
+#line 96 "parser.y"
                                 {
         (yyval.tipo_nodo)= new Nodo_arbol("MKDISK","");
         (yyval.tipo_nodo)->add(*(yyvsp[0].tipo_nodo));
-        printf("Comando mkdisk correcto!!");
-  }
-#line 1376 "parser.cpp"
+    }
+#line 1379 "parser.cpp"
     break;
 
   case 4:
-#line 102 "parser.y"
-                                   {
-        (yyval.tipo_nodo)=(yyvsp[-1].tipo_nodo);
-        (yyval.tipo_nodo)->add(*(yyvsp[0].tipo_nodo));
-  }
-#line 1385 "parser.cpp"
+#line 100 "parser.y"
+                                        {
+        (yyval.tipo_nodo)= new Nodo_arbol("RMDISK","");
+        (yyval.tipo_nodo)->add(*(new Nodo_arbol("path",(yyvsp[0].TEXT))));
+        printf("comando rmdisk correcto!! \n");
+    }
+#line 1389 "parser.cpp"
     break;
 
   case 5:
-#line 106 "parser.y"
-              {
-        (yyval.tipo_nodo) = new Nodo_arbol("PARAMETRO","");
-        (yyval.tipo_nodo)->add(*(yyvsp[0].tipo_nodo));
-  }
-#line 1394 "parser.cpp"
+#line 105 "parser.y"
+                                          {
+        (yyval.tipo_nodo)= new Nodo_arbol("RMDISK","");
+        (yyval.tipo_nodo)->add(*(new Nodo_arbol("path",(yyvsp[0].TEXT))));
+        printf("comando rmdisk correcto!! \n");
+    }
+#line 1399 "parser.cpp"
     break;
 
   case 6:
 #line 112 "parser.y"
                                    {
-        (yyval.tipo_nodo)= new Nodo_arbol("fit","");
+        (yyval.tipo_nodo)=(yyvsp[-1].tipo_nodo);
         (yyval.tipo_nodo)->add(*(yyvsp[0].tipo_nodo));
   }
-#line 1403 "parser.cpp"
+#line 1408 "parser.cpp"
     break;
 
   case 7:
 #line 116 "parser.y"
+              {
+        (yyval.tipo_nodo) = new Nodo_arbol("PARAMETRO","");
+        (yyval.tipo_nodo)->add(*(yyvsp[0].tipo_nodo));
+  }
+#line 1417 "parser.cpp"
+    break;
+
+  case 8:
+#line 122 "parser.y"
+                                   {
+        (yyval.tipo_nodo)= new Nodo_arbol("fit","");
+        (yyval.tipo_nodo)->add(*(yyvsp[0].tipo_nodo));
+  }
+#line 1426 "parser.cpp"
+    break;
+
+  case 9:
+#line 126 "parser.y"
                               {
         (yyval.tipo_nodo)= new Nodo_arbol("unit","");
         (yyval.tipo_nodo)->add(*(yyvsp[0].tipo_nodo));
   }
-#line 1412 "parser.cpp"
-    break;
-
-  case 8:
-#line 120 "parser.y"
-                               {
-        (yyval.tipo_nodo)= new Nodo_arbol("size",(yyvsp[0].TEXT));
-  }
-#line 1420 "parser.cpp"
-    break;
-
-  case 9:
-#line 123 "parser.y"
-                             {
-        (yyval.tipo_nodo)= new Nodo_arbol("path",(yyvsp[0].TEXT));
-  }
-#line 1428 "parser.cpp"
+#line 1435 "parser.cpp"
     break;
 
   case 10:
-#line 126 "parser.y"
+#line 130 "parser.y"
                                {
-        (yyval.tipo_nodo)= new Nodo_arbol("path",(yyvsp[0].TEXT));
+        (yyval.tipo_nodo)= new Nodo_arbol("size",(yyvsp[0].TEXT));
   }
-#line 1436 "parser.cpp"
+#line 1443 "parser.cpp"
     break;
 
   case 11:
-#line 131 "parser.y"
-              {
-        (yyval.tipo_nodo)=new Nodo_arbol("ajuste","bf");
+#line 133 "parser.y"
+                             {
+        (yyval.tipo_nodo)= new Nodo_arbol("path",(yyvsp[0].TEXT));
   }
-#line 1444 "parser.cpp"
+#line 1451 "parser.cpp"
     break;
 
   case 12:
-#line 134 "parser.y"
-          {
-        (yyval.tipo_nodo)=new Nodo_arbol("ajuste","ff");
+#line 136 "parser.y"
+                               {
+        (yyval.tipo_nodo)= new Nodo_arbol("path",(yyvsp[0].TEXT));
   }
-#line 1452 "parser.cpp"
+#line 1459 "parser.cpp"
     break;
 
   case 13:
-#line 137 "parser.y"
-          {
-        (yyval.tipo_nodo)=new Nodo_arbol("ajuste","wf");
+#line 141 "parser.y"
+              {
+        (yyval.tipo_nodo)=new Nodo_arbol("ajuste","bf");
   }
-#line 1460 "parser.cpp"
+#line 1467 "parser.cpp"
     break;
 
   case 14:
-#line 142 "parser.y"
-                  {
-        (yyval.tipo_nodo)=new Nodo_arbol("unidad","k");
+#line 144 "parser.y"
+          {
+        (yyval.tipo_nodo)=new Nodo_arbol("ajuste","ff");
   }
-#line 1468 "parser.cpp"
+#line 1475 "parser.cpp"
     break;
 
   case 15:
-#line 145 "parser.y"
+#line 147 "parser.y"
+          {
+        (yyval.tipo_nodo)=new Nodo_arbol("ajuste","wf");
+  }
+#line 1483 "parser.cpp"
+    break;
+
+  case 16:
+#line 152 "parser.y"
+                  {
+        (yyval.tipo_nodo)=new Nodo_arbol("unidad","k");
+  }
+#line 1491 "parser.cpp"
+    break;
+
+  case 17:
+#line 155 "parser.y"
             {
         (yyval.tipo_nodo)=new Nodo_arbol("unidad","m");
   }
-#line 1476 "parser.cpp"
+#line 1499 "parser.cpp"
     break;
 
 
-#line 1480 "parser.cpp"
+#line 1503 "parser.cpp"
 
       default: break;
     }
@@ -1708,7 +1731,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 150 "parser.y"
+#line 160 "parser.y"
 
 /********************
   Codigo C o C++ Adicional

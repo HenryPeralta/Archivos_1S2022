@@ -53,6 +53,7 @@
 /* Especificacion de termines, podemos especificar tambien su tipo  */
 %token <TEXT> tk_igual
 %token <TEXT> tk_mkdisk
+%token <TEXT> tk_rmdisk
 
 
 %token <TEXT> tk_size
@@ -95,8 +96,17 @@ I: CONTENIDO{
 CONTENIDO: tk_mkdisk LPARAMETROS{
         $$= new Nodo_arbol("MKDISK","");
         $$->add(*$2);
-        printf("Comando mkdisk correcto!!");
-  }
+    }
+    | tk_rmdisk tk_path tk_igual tk_ruta{
+        $$= new Nodo_arbol("RMDISK","");
+        $$->add(*(new Nodo_arbol("path",$4)));
+        printf("comando rmdisk correcto!! \n");
+    }
+    | tk_rmdisk tk_path tk_igual tk_cadena{
+        $$= new Nodo_arbol("RMDISK","");
+        $$->add(*(new Nodo_arbol("path",$4)));
+        printf("comando rmdisk correcto!! \n");
+    }
   ;
 
 LPARAMETROS: LPARAMETROS PARAMETROS{
