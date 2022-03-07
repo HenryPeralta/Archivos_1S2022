@@ -40,7 +40,6 @@ void coman_mkdisk::recorrido_mkdisk(Nodo_arbol *raiz){
         if(temp.tipo_num == PATH){
             bandera_path = true;
             valor_path = temp.valor;
-
         }
     }
     if(bandera_size == false){
@@ -117,7 +116,7 @@ void coman_mkdisk::ejecutarDisco(int psize, string pfit, string punit, QString p
         prueba.mbr_partition[p].part_status = '0';
         prueba.mbr_partition[p].part_type = '0';
         prueba.mbr_partition[p].part_fit = '0';
-        prueba.mbr_partition[p].part_size = '0';
+        prueba.mbr_partition[p].part_size = 0;
         prueba.mbr_partition[p].part_start = -1;
         strcpy(prueba.mbr_partition[p].part_name,"");
     }

@@ -19,10 +19,11 @@
 #include "estructuras.h"
 #include "graficar.h"
 
-//COMANDO MKDISK
+//COMANDOS
 #include "coman_mkdisk.h"
-//COMANDO RMDISK
 #include "coman_rmdisk.h"
+#include "coman_exec.h"
+#include "coman_fdisk.h"
 
 using namespace std;
 
@@ -34,6 +35,8 @@ extern int columna;
 
 void Comando(char*);
 void recorrer_ast(Nodo_arbol*);
+void varios_exec(QList<Nodo_arbol> *hijos);
+bool existe_archivo(QString path);
 
 
 int main()
@@ -87,6 +90,15 @@ void recorrer_ast(Nodo_arbol *raiz){
         coman_rmdisk *rmdisk = new coman_rmdisk();
         rmdisk->recorrido_rmdisk(&temp);
         break;
+    }case EXEC:{
+        QList<Nodo_arbol> temp = raiz->hijos;
+        varios_exec(&temp);
+        break;
+    }case FDISK:{
+        Nodo_arbol temp = raiz->hijos.at(0);
+        coman_fdisk *fdisk = new coman_fdisk();
+        fdisk->recorrido_fdisk(&temp);
+        break;
     }
     default:{
         cout<<"Error: comando no reconocido"<<endl;
@@ -94,3 +106,48 @@ void recorrer_ast(Nodo_arbol *raiz){
     }
     }
 }
+
+void varios_exec(QList<Nodo_arbol> *hijos){
+    QString path = hijos->at(0).valor;
+    path.replace(QString("\""), QString(""));
+    string rutax = path.toStdString();
+    QString ruta = rutax.c_str();
+    if(existe_archivo(ruta)){
+        cout<<"Archivo encontrado con exito"<<endl;
+        ifstream entrada(ruta.toStdString());
+        string linea;
+        QString aux_linea;
+        int contador = 0;
+        columna = 0;
+
+        while(getline(entrada, linea)){
+            contador++;
+            if(linea.length()>1){
+                aux_linea = linea.c_str();
+                QByteArray nuevo = aux_linea.toLocal8Bit();
+                char *caracter = nuevo.data();
+                if(caracter[0] == '#'){
+
+                }else{
+                    cout<<"--- Ejecutando Script ---"<<endl;
+                    cout<<"Linea: "<<contador<<" Comando: "<<linea<<endl;
+                    Comando(caracter);
+                }
+            }
+        }
+    }else{
+        cout<<"Error: El archivo no se encontro"<<endl;
+    }
+}
+
+bool existe_archivo(QString path){
+    QFileInfo check_file(path);
+    if (check_file.exists() && check_file.isFile()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+

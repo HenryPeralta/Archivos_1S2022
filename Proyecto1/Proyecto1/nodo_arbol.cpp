@@ -40,6 +40,27 @@ int Nodo_arbol::getTipo(){
     if(this->tipo == "RMDISK"){
         return 9;
     }
+    if(this->tipo == "EXEC"){
+        return 10;
+    }
+    if(this->tipo == "FDISK"){
+        return 11;
+    }
+    if(this->tipo == "name"){
+        return 12;
+    }
+    if(this->tipo == "tipo"){
+        return 13;
+    }
+    if(this->tipo == "type"){
+        return 14;
+    }
+    if(this->tipo == "delete"){
+        return 15;
+    }
+    if(this->tipo == "add"){
+        return 16;
+    }
     return 0;
 }
 

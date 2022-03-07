@@ -16,7 +16,15 @@ enum comandos{
     PARAMETRO = 6,
     AJUSTE = 7,
     UNIDAD = 8,
-    RMDISK = 9
+    RMDISK = 9,
+    EXEC = 10,
+    FDISK = 11,
+    NAME = 12,
+    TIPO = 13,
+    TYPE = 14,
+    DELETE = 15,
+    ADD = 16
+
     //RMDISK = 2,
     //FDISK = 3,
     //MOUNT = 4,

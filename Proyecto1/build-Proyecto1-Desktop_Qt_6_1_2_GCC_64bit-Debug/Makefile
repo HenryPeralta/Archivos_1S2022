@@ -52,7 +52,9 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../Proyecto1/coman_mkdisk.cpp \
+SOURCES       = ../Proyecto1/coman_exec.cpp \
+		../Proyecto1/coman_fdisk.cpp \
+		../Proyecto1/coman_mkdisk.cpp \
 		../Proyecto1/coman_rmdisk.cpp \
 		../Proyecto1/estructuras.cpp \
 		../Proyecto1/graficar.cpp \
@@ -60,7 +62,9 @@ SOURCES       = ../Proyecto1/coman_mkdisk.cpp \
 		../Proyecto1/nodo_arbol.cpp \
 		../Proyecto1/parser.cpp \
 		../Proyecto1/scanner.cpp 
-OBJECTS       = coman_mkdisk.o \
+OBJECTS       = coman_exec.o \
+		coman_fdisk.o \
+		coman_mkdisk.o \
 		coman_rmdisk.o \
 		estructuras.o \
 		graficar.o \
@@ -208,13 +212,17 @@ DIST          = ../Proyecto1/lexico.l \
 		/home/henry/Qt/6.1.2/gcc_64/mkspecs/features/exceptions.prf \
 		/home/henry/Qt/6.1.2/gcc_64/mkspecs/features/yacc.prf \
 		/home/henry/Qt/6.1.2/gcc_64/mkspecs/features/lex.prf \
-		../Proyecto1/Proyecto1.pro ../Proyecto1/coman_mkdisk.h \
+		../Proyecto1/Proyecto1.pro ../Proyecto1/coman_exec.h \
+		../Proyecto1/coman_fdisk.h \
+		../Proyecto1/coman_mkdisk.h \
 		../Proyecto1/coman_rmdisk.h \
 		../Proyecto1/estructuras.h \
 		../Proyecto1/graficar.h \
 		../Proyecto1/nodo_arbol.h \
 		../Proyecto1/parser.h \
-		../Proyecto1/scanner.h ../Proyecto1/coman_mkdisk.cpp \
+		../Proyecto1/scanner.h ../Proyecto1/coman_exec.cpp \
+		../Proyecto1/coman_fdisk.cpp \
+		../Proyecto1/coman_mkdisk.cpp \
 		../Proyecto1/coman_rmdisk.cpp \
 		../Proyecto1/estructuras.cpp \
 		../Proyecto1/graficar.cpp \
@@ -529,8 +537,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/henry/Qt/6.1.2/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Proyecto1/coman_mkdisk.h ../Proyecto1/coman_rmdisk.h ../Proyecto1/estructuras.h ../Proyecto1/graficar.h ../Proyecto1/nodo_arbol.h ../Proyecto1/parser.h ../Proyecto1/scanner.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Proyecto1/coman_mkdisk.cpp ../Proyecto1/coman_rmdisk.cpp ../Proyecto1/estructuras.cpp ../Proyecto1/graficar.cpp ../Proyecto1/main.cpp ../Proyecto1/nodo_arbol.cpp ../Proyecto1/parser.cpp ../Proyecto1/scanner.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Proyecto1/coman_exec.h ../Proyecto1/coman_fdisk.h ../Proyecto1/coman_mkdisk.h ../Proyecto1/coman_rmdisk.h ../Proyecto1/estructuras.h ../Proyecto1/graficar.h ../Proyecto1/nodo_arbol.h ../Proyecto1/parser.h ../Proyecto1/scanner.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Proyecto1/coman_exec.cpp ../Proyecto1/coman_fdisk.cpp ../Proyecto1/coman_mkdisk.cpp ../Proyecto1/coman_rmdisk.cpp ../Proyecto1/estructuras.cpp ../Proyecto1/graficar.cpp ../Proyecto1/main.cpp ../Proyecto1/nodo_arbol.cpp ../Proyecto1/parser.cpp ../Proyecto1/scanner.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -577,6 +585,226 @@ compiler_lex_clean:
 compiler_clean: compiler_moc_predefs_clean 
 
 ####### Compile
+
+coman_exec.o: ../Proyecto1/coman_exec.cpp ../Proyecto1/coman_exec.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QtCore \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QtCoreDepends \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qglobal.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qconfig.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtcore-config.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsysinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlogging.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qflags.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qatomic.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmutex.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qnumeric.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qversiontagging.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstractanimation.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobject.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qnamespace.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstring.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qchar.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringview.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qrefcount.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qarraydata.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpair.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qarraydataops.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringliteral.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qanystringview.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlist.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qiterator.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringlist.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qalgorithms.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcoreevent.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmetatype.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcompare.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdatastream.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qiterable.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmath.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobject_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qproperty.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qshareddata.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpropertyprivate.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qeventloop.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qhash.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qvariant.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmap.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdebug.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtextstream.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringconverter.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qset.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstractproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qanimationgroup.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qassociativeiterable.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbasictimer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbitarray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbuffer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qiodevice.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearraymatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcache.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcalendar.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlocale.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborarray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborvalue.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdatetime.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborcommon.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qregularexpression.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qurl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/quuid.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcbormap.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborstream.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborstreamreader.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfloat16.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborstreamwriter.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcollator.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcommandlineoption.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcommandlineparser.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qconcatenatetablesproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcryptographichash.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdir.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfile.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfiledevice.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfileinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdiriterator.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qeasingcurve.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qendian.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qexception.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfactoryinterface.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfileselector.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QObject \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QStringList \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfilesystemwatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfuture.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qrunnable.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qresultstore.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qthreadpool.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qthread.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfuturesynchronizer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfuturewatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qidentityproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjnienvironment.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QScopedPointer \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjniobject.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjsonarray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjsondocument.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjsonobject.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlibrary.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlibraryinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qversionnumber.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qline.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpoint.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlockfile.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qloggingcategory.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmargins.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmessageauthenticationcode.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmetaobject.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmimedata.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmimedatabase.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmimetype.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobjectcleanuphandler.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qoperatingsystemversion.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qparallelanimationgroup.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpauseanimation.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qplugin.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpluginloader.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qprocess.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpromise.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpropertyanimation.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qvariantanimation.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qqueue.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qrandom.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qreadwritelock.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qrect.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsize.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qresource.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsavefile.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qscopedvaluerollback.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qscopeguard.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsemaphore.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsequentialanimationgroup.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsequentialiterable.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsettings.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsharedmemory.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsignalmapper.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsimd.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsocketnotifier.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsortfilterproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstack.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstandardpaths.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstorageinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringlistmodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsystemsemaphore.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtemporarydir.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtemporaryfile.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtextboundaryfinder.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qthreadstorage.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtimeline.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtimer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtimezone.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtranslator.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtransposeproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qurlquery.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qvector.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qwaitcondition.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QDeadlineTimer \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qwineventnotifier.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qxmlstream.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtcoreversion.h \
+		../Proyecto1/nodo_arbol.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QString \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QList \
+		../Proyecto1/estructuras.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coman_exec.o ../Proyecto1/coman_exec.cpp
+
+coman_fdisk.o: ../Proyecto1/coman_fdisk.cpp ../Proyecto1/coman_fdisk.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coman_fdisk.o ../Proyecto1/coman_fdisk.cpp
 
 coman_mkdisk.o: ../Proyecto1/coman_mkdisk.cpp ../Proyecto1/coman_mkdisk.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QtCore \
@@ -795,7 +1023,221 @@ coman_mkdisk.o: ../Proyecto1/coman_mkdisk.cpp ../Proyecto1/coman_mkdisk.h \
 		../Proyecto1/estructuras.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coman_mkdisk.o ../Proyecto1/coman_mkdisk.cpp
 
-coman_rmdisk.o: ../Proyecto1/coman_rmdisk.cpp ../Proyecto1/coman_rmdisk.h
+coman_rmdisk.o: ../Proyecto1/coman_rmdisk.cpp ../Proyecto1/coman_rmdisk.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QtCore \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QtCoreDepends \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qglobal.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qconfig.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtcore-config.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsysinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlogging.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qflags.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qatomic.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmutex.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qnumeric.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qversiontagging.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstractanimation.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobject.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qnamespace.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtmetamacros.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstring.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qchar.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringview.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qrefcount.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qarraydata.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpair.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qarraydatapointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qarraydataops.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcontainertools_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearrayalgorithms.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearrayview.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringliteral.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringalgorithms.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qanystringview.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qutf8stringview.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringtokenizer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlist.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qiterator.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringlist.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qalgorithms.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcoreevent.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmetatype.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcompare.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdatastream.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qiodevicebase.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qiterable.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmetacontainer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcontainerinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtaggedpointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmath.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobject_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qproperty.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qshareddata.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpropertyprivate.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qeventloop.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstractitemmodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qhash.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qvariant.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmap.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qshareddata_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdebug.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtextstream.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringconverter.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qset.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcontiguouscache.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsharedpointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qabstractproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qanimationgroup.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qassociativeiterable.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbasictimer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbitarray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbuffer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qiodevice.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qbytearraymatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcache.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcalendar.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlocale.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborarray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborvalue.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdatetime.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborcommon.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qregularexpression.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qurl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/quuid.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcbormap.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborstream.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborstreamreader.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfloat16.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcborstreamwriter.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcollator.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcommandlineoption.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcommandlineparser.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcoreapplication.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qconcatenatetablesproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qcryptographichash.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdeadlinetimer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qelapsedtimer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdir.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfile.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfiledevice.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfileinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qdiriterator.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qeasingcurve.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qendian.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qexception.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfactoryinterface.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfileselector.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QObject \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QStringList \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfilesystemwatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfuture.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfutureinterface.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qrunnable.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qresultstore.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfuture_impl.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qthreadpool.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qthread.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpointer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfuturesynchronizer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qfuturewatcher.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qidentityproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjnienvironment.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QScopedPointer \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjniobject.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjsonarray.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjsonvalue.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjsondocument.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qjsonobject.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlibrary.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlibraryinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qversionnumber.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qline.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpoint.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qlockfile.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qloggingcategory.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmargins.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmessageauthenticationcode.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmetaobject.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmimedata.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmimedatabase.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qmimetype.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qobjectcleanuphandler.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qoperatingsystemversion.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qparallelanimationgroup.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpauseanimation.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qplugin.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpluginloader.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qprocess.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpromise.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qpropertyanimation.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qvariantanimation.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qqueue.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qrandom.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qreadwritelock.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qrect.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsize.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qresource.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsavefile.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qscopedvaluerollback.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qscopeguard.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsemaphore.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsequentialanimationgroup.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsequentialiterable.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsettings.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsharedmemory.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsignalmapper.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsimd.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsocketnotifier.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsortfilterproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstack.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstandardpaths.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstorageinfo.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qstringlistmodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qsystemsemaphore.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtemporarydir.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtemporaryfile.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtextboundaryfinder.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qthreadstorage.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtimeline.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtimer.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtimezone.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtranslator.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtransposeproxymodel.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qurlquery.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qvector.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qwaitcondition.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QDeadlineTimer \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qwineventnotifier.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qxmlstream.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/qtcoreversion.h \
+		../Proyecto1/nodo_arbol.h \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QString \
+		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QList \
+		../Proyecto1/estructuras.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coman_rmdisk.o ../Proyecto1/coman_rmdisk.cpp
 
 estructuras.o: ../Proyecto1/estructuras.cpp ../Proyecto1/estructuras.h \
@@ -1163,7 +1605,9 @@ main.o: ../Proyecto1/main.cpp /home/henry/Qt/6.1.2/gcc_64/include/QtCore/QCoreAp
 		../Proyecto1/graficar.h \
 		../Proyecto1/nodo_arbol.h \
 		/home/henry/Qt/6.1.2/gcc_64/include/QtCore/QList \
-		../Proyecto1/coman_mkdisk.h
+		../Proyecto1/coman_mkdisk.h \
+		../Proyecto1/coman_rmdisk.h \
+		../Proyecto1/coman_exec.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Proyecto1/main.cpp
 
 nodo_arbol.o: ../Proyecto1/nodo_arbol.cpp ../Proyecto1/nodo_arbol.h \
