@@ -61,6 +61,9 @@ int Nodo_arbol::getTipo(){
     if(this->tipo == "add"){
         return 16;
     }
+    if(this->tipo == "MOUNT"){
+        return 17;
+    }
     return 0;
 }
 

@@ -76,7 +76,7 @@ void coman_fdisk::recorrido_fdisk(Nodo_arbol *raiz){
                 bandera_error = true;
                 std::cout<<"Error: Se esta creando una particion, los Parametros -delete, -add no estan permitidos\n";
             }else{
-                std::cout<<"Todo Correcto para crear una particion!!! \n";
+                //std::cout<<"Todo Correcto para crear una particion!!! \n";
                 crear_particiones(valor_type, valor_path, valor_name, valor_size, valor_fit, valor_unit);
             }
         }else if(bandera_add == true){
@@ -85,12 +85,23 @@ void coman_fdisk::recorrido_fdisk(Nodo_arbol *raiz){
                 std::cout<<"Error: Se esta modificando el tamaño una particion, los Parametros -delete, -size y -type no estas permitidos \n";
             }else{
                 std::cout<<"Todo Correcto para crear una ADD!!! \n";
+                comando_add(valor_path, valor_name, valor_add, valor_unit, "principal");
             }
         }else if(bandera_delete == true){
             if(bandera_size == true || bandera_add == true || bandera_fit == true || bandera_type == true){
                 std::cout<<"Error: Se esta eliminando una particion, los Parametros -size, -add, -fit, -type no estan permitidos \n";
             }else{
-                std::cout<<"Todo Correcto para crear una DELETE!!! \n";
+                //std::cout<<"Todo Correcto para crear una DELETE!!! \n";
+                string eleccion = "";
+                cout << "¿Esta seguro que desea eliminar el disco? S/N : ";
+                getline(cin, eleccion);
+                if(eleccion.compare("s") == 0 || eleccion.compare("S") == 0){
+                    eliminarParticion(valor_path, valor_name, valor_delete.toStdString(), "principal");
+                }else if(eleccion.compare("n") == 0 || eleccion.compare("N") == 0){
+                    cout << "Eliminacion cancelada \n";
+                }else{
+                    cout << "Esa opcion no esta permitida \n";
+                }
             }
         }
     }
@@ -504,25 +515,25 @@ void coman_fdisk::crearParticionLogica(QString path, QString name, int size, str
     int size_bytes = 1024;
     char buffer = '1';
 
-    if(fit=="bf"){
+    if(fit == "bf" || fit == "BF"){
         auxFit='B';
     }
-    else if(fit=="ff"){
+    else if(fit == "ff" || fit == "FF"){
         auxFit='F';
     }
-    else if(fit=="wf"){
+    else if(fit == "wf" || fit == "WF"){
         auxFit='W';
     }
 
-    if(unit=="b"){
+    if(unit == "b" || unit == "B"){
         auxUnit='b';
         size_bytes = size;
     }
-    else if(unit=="k"){
+    else if(unit == "k" || unit == "K"){
         auxUnit='k';
         size_bytes = size * 1024;
     }
-    else if(unit=="m"){
+    else if(unit == "m" || unit == "M"){
         auxUnit='m';
         size_bytes = size*1024*1024;
     }
@@ -598,6 +609,373 @@ void coman_fdisk::crearParticionLogica(QString path, QString name, int size, str
         cout << "Error: no existe el disco" << endl;
     }
 
+}
+
+void coman_fdisk::eliminarParticion(QString path, QString name, string tipo_delete, QString archivo){
+    //std::cout<<"El valor de path en eliminar particion es: "<<path.toStdString()<<"\n";
+    //std::cout<<"El valor de name en eliminar particion es: "<<name.toStdString()<<"\n";
+    //std::cout<<"El valor del tipo delete es: "<<tipo_delete<<"\n";
+    string auxPath = path.toStdString();
+    string auxNombre = name.toStdString();
+    FILE *Archivo;
+    if((Archivo = fopen(auxPath.c_str(), "rb+"))){
+        //Verificar que la particion no este montada
+        bool mount = lista->buscarNodo(path,name);
+        if(!mount){
+            mbr MBR;
+            fseek(Archivo,0,SEEK_SET);
+            fread(&MBR,sizeof (mbr),1,Archivo);
+            int index = -1;
+            int index_Extendida = -1;
+            bool flagExtendida = false;
+            //string opcion = "";
+            char buffer = '\0';
+            //Buscamos la particion primaria/extendida
+            for(int i = 0; i < 4; i++){
+                if((strcmp(MBR.mbr_partition[i].part_name, auxNombre.c_str())) == 0){
+                    index = i;
+                    if(MBR.mbr_partition[i].part_type == 'E')
+                        flagExtendida = true;
+                    break;
+                }else if(MBR.mbr_partition[i].part_type == 'E'){
+                    index_Extendida = i;
+                }
+            }
+            //ELIMINA LAS PARTICIONES SI NO ESTAN MONTADAS
+                if(index != -1){//Si se encontro en las principales
+                    if(!flagExtendida){//primaria
+                        if(tipo_delete == "fast"){
+                            MBR.mbr_partition[index].part_status = '1';
+                            strcpy(MBR.mbr_partition[index].part_name,"");
+                            fseek(Archivo,0,SEEK_SET);
+                            fwrite(&MBR,sizeof(mbr),1,Archivo);
+                            if(archivo == "principal") cout << "Particion primaria eliminada con exito" << endl;
+
+                        }else{//full
+                            MBR.mbr_partition[index].part_status = '1';
+                            strcpy(MBR.mbr_partition[index].part_name,"");
+                            fseek(Archivo,0,SEEK_SET);
+                            fwrite(&MBR,sizeof(mbr),1,Archivo);
+                            fseek(Archivo,MBR.mbr_partition[index].part_start,SEEK_SET);
+                            fwrite(&buffer,1,MBR.mbr_partition[index].part_size,Archivo);
+                            if(archivo == "principal") cout << "Particion primaria eliminada con exito" << endl;
+                        }
+                    }else{//extendida
+                        if(tipo_delete == "fast"){
+                            MBR.mbr_partition[index].part_status = '1';
+                            strcpy(MBR.mbr_partition[index].part_name,"");
+                            fseek(Archivo,0,SEEK_SET);
+                            fwrite(&MBR,sizeof(mbr),1,Archivo);
+                            if(archivo == "principal") cout << "Particion extendida eliminada con exito" << endl;
+                        }else{//full
+                            MBR.mbr_partition[index].part_status = '1';
+                            strcpy(MBR.mbr_partition[index].part_name,"");
+                            fseek(Archivo,0,SEEK_SET);
+                            fwrite(&MBR,sizeof(mbr),1,Archivo);
+                            fseek(Archivo,MBR.mbr_partition[index].part_start,SEEK_SET);
+                            fwrite(&buffer,1,MBR.mbr_partition[index].part_size,Archivo);
+                            if(archivo == "principal") cout << "Particion extendida eliminada con exito" << endl;
+                        }
+                    }
+                }else{//Si es una particion logica
+                    if(index_Extendida != -1){
+                        bool flag = false;//Bandera para saber si existe
+                        ebr EBR;
+                        fseek(Archivo,MBR.mbr_partition[index_Extendida].part_start, SEEK_SET);
+                        fread(&EBR,sizeof(ebr),1,Archivo);
+                        if(EBR.part_size!=0){
+                            fseek(Archivo, MBR.mbr_partition[index_Extendida].part_start,SEEK_SET);
+                            while((fread(&EBR,sizeof(ebr),1,Archivo))!=0 && (ftell(Archivo) < (MBR.mbr_partition[index_Extendida].part_start + MBR.mbr_partition[index_Extendida].part_size))) {
+                                if(strcmp(EBR.part_name,name.toStdString().c_str()) == 0 && EBR.part_status != '1'){
+                                    flag = true;
+                                    break;
+                                }else if(EBR.part_next == -1){//Ya es la ultima y no se encontro
+                                    break;
+                                }
+                            }
+                        }
+                        if(flag){
+                            if(tipo_delete == "fast"){
+                                EBR.part_status = '1';
+                                strcpy(EBR.part_name, "");
+                                fseek(Archivo, ftell(Archivo)-sizeof(ebr),SEEK_SET);
+                                fwrite(&EBR,sizeof(ebr),1,Archivo);
+                                if(archivo == "principal") cout << "Particion logica eliminada con exito" << endl;
+                            }else{//full
+                                EBR.part_status = '1';
+                                strcpy(EBR.part_name, "");
+                                fseek(Archivo, ftell(Archivo)-sizeof(ebr),SEEK_SET);
+                                fwrite(&EBR,sizeof(ebr),1,Archivo);
+                                fwrite(&buffer,1,EBR.part_size,Archivo);
+                                if(archivo == "principal") cout << "Particion logica eliminada con exito" << endl;
+                            }
+                        }else{
+                            cout << "Error: no se encuentra la particion a eliminar" << endl;
+                        }
+                    }else{
+                        cout << "Error: no se encuentra la particion a eliminar" << endl;
+                    }
+                }
+
+
+        }else{
+            cout << "ERROR: desmote primero la particion para poder eliminarlo" << endl;
+        }
+    fclose(Archivo);
+    }else{
+        cout << "Error: el disco donde se va a eliminar no existe" << endl;
+    }
+}
+
+void coman_fdisk::comando_add(QString path, QString name, int add, string unit, QString archivo){
+    std::cout<<"El valor de path para add es: "<<path.toStdString()<<"\n";
+    std::cout<<"El valor de name para add es: "<<name.toStdString()<<"\n";
+    std::cout<<"El valor de add es: "<<add<<"\n";
+    std::cout<<"El valor de unit para add es: "<<unit<<"\n";
+
+    string auxPath = path.toStdString();
+    string auxNombre = name.toStdString();
+    int size_Bytes = 0;
+    QString tipo = "";
+
+    if(add > 0){
+        tipo = "add";
+    }
+
+    if(tipo != "add"){
+        add = add*(-1);
+    }
+
+    if(unit == "m" || unit == "M"){
+        size_Bytes = add * 1024 * 1024;
+    }
+    else if(unit == "k" || unit == "K"){
+        size_Bytes = add * 1024;
+    }
+    else{
+        size_Bytes = add;
+    }
+
+    FILE *Archivo;
+    if((Archivo = fopen(auxPath.c_str(), "rb+"))){
+        //Verificar que la particion no este montada
+        bool mount = lista->buscarNodo(path,name);
+        if(!mount){
+            mbr MBR;
+            fseek(Archivo,0,SEEK_SET);
+            fread(&MBR,sizeof(mbr),1,Archivo);
+            int index = -1;
+            int index_Extendida = -1;
+            bool flagExtendida = false;
+            //Buscamos la particion primaria/extendida
+            for(int i = 0; i < 4; i++){
+                if((strcmp(MBR.mbr_partition[i].part_name, auxNombre.c_str())) == 0){
+                    index = i;
+                    if(MBR.mbr_partition[i].part_type == 'E')
+                        flagExtendida = true;
+                    break;
+                }else if(MBR.mbr_partition[i].part_type == 'E'){
+                    index_Extendida = i;
+                }
+            }
+            if(index != -1){//Si se encontro en las principales
+                if(!flagExtendida){//Primaria
+                    if(tipo == "add"){//Agregar
+                        //Verificar que exista espacio libre a la derecha
+                        if(index!=3){
+                            int p1 = MBR.mbr_partition[index].part_start + MBR.mbr_partition[index].part_size;
+                            int p2 = MBR.mbr_partition[index+1].part_start;
+                            if((p2 - p1) != 0){//Hay fragmentacion
+                                int fragmentacion = p2-p1;
+                                if(fragmentacion >= size_Bytes){
+                                    MBR.mbr_partition[index].part_size = MBR.mbr_partition[index].part_size + size_Bytes;
+                                    fseek(Archivo,0,SEEK_SET);
+                                    fwrite(&MBR,sizeof(mbr),1,Archivo);
+                                    if(archivo == "principal") cout << "Se agrego espacio a la particion de manera exitosa." << endl;
+                                }else{
+                                    cout << "ERROR: no es posible agregar espacio a la particion porque no hay suficiente espacio disponible a su derecha" << endl;
+                                }
+                            }else{//Espacio no usado
+                                if(MBR.mbr_partition[index + 1].part_status == '1'){
+                                    if(MBR.mbr_partition[index + 1].part_size >= size_Bytes){
+                                        MBR.mbr_partition[index].part_size = MBR.mbr_partition[index].part_size + size_Bytes;
+                                        MBR.mbr_partition[index + 1].part_size = (MBR.mbr_partition[index + 1].part_size - size_Bytes);
+                                        MBR.mbr_partition[index + 1].part_start = MBR.mbr_partition[index + 1].part_start + size_Bytes;
+                                        fseek(Archivo,0,SEEK_SET);
+                                        fwrite(&MBR,sizeof(mbr),1,Archivo);
+                                        if(archivo == "principal") cout << "Se agrego espacio a la particion de manera exitosa" << endl;
+                                    }else{
+                                        cout << "Error: no es posible agregar espacio a la particion porque no hay suficiente espacio disponible a su derecha" << endl;
+                                    }
+                                }
+                            }
+                        }else{
+                            int p = MBR.mbr_partition[index].part_start + MBR.mbr_partition[index].part_size;
+                            int total = MBR.mbr_tamano + (int)sizeof(mbr);
+                            if((total-p) != 0){
+                                int fragmentacion = total - p;
+                                if(fragmentacion >= size_Bytes){
+                                    MBR.mbr_partition[index].part_size = MBR.mbr_partition[index].part_size + size_Bytes;
+                                    fseek(Archivo,0,SEEK_SET);
+                                    fwrite(&MBR,sizeof(mbr),1,Archivo);
+                                    if(archivo == "principal") cout << "Se agrego espacio a la particion de manera exitosa" << endl;
+                                }else{
+                                    cout << "Error: no es posible agregar espacio a la particion porque no hay suficiente espacio disponible a su derecha" << endl;
+                                }
+                            }else{
+                                cout << "Error: no es posible agregar espacio a la particion porque no hay espacio disponible a su derecha" << endl;
+                            }
+                        }
+                    }else{//Quitar espacio
+                        //Que no borre la particion
+                        if(size_Bytes >= MBR.mbr_partition[index].part_size){
+                            cout << "Error: no es posible quitarle esta cantidad de espacio a la particion porque la borraria" << endl;
+                        }else{
+                            MBR.mbr_partition[index].part_size = MBR.mbr_partition[index].part_size - size_Bytes;
+                            fseek(Archivo,0,SEEK_SET);
+                            fwrite(&MBR,sizeof(mbr),1,Archivo);
+                            if(archivo == "principal") cout << "Se quito espacio a la particion de manera exitosa" << endl;
+                        }
+                    }
+                }else{//Extendida
+                    if(tipo == "add"){//Agregar
+                        //Verificar que exista espacio libre a la derecha
+                        if(index!=3){
+                            int p1 = MBR.mbr_partition[index].part_start + MBR.mbr_partition[index].part_size;
+                            int p2 = MBR.mbr_partition[index+1].part_start;
+                            if((p2 - p1) != 0){//Hay fragmentacion
+                                int fragmentacion = p2-p1;
+                                if(fragmentacion >= size_Bytes){
+                                    MBR.mbr_partition[index].part_size = MBR.mbr_partition[index].part_size + size_Bytes;
+                                    fseek(Archivo,0,SEEK_SET);
+                                    fwrite(&MBR,sizeof(mbr),1,Archivo);
+                                    if(archivo == "principal") cout << "Se agrego espacio a la particion de manera exitosa" << endl;
+                                }else{
+                                    cout << "Error: no es posible agregar espacio a la particion porque no hay suficiente espacio disponible a su derecha" << endl;
+                                }
+                            }else{
+                                if(MBR.mbr_partition[index + 1].part_status == '1'){
+                                    if(MBR.mbr_partition[index + 1].part_size >= size_Bytes){
+                                        MBR.mbr_partition[index].part_size = MBR.mbr_partition[index].part_size + size_Bytes;
+                                        MBR.mbr_partition[index + 1].part_size = (MBR.mbr_partition[index + 1].part_size - size_Bytes);
+                                        MBR.mbr_partition[index + 1].part_start = MBR.mbr_partition[index + 1].part_start + size_Bytes;
+                                        fseek(Archivo,0,SEEK_SET);
+                                        fwrite(&MBR,sizeof(mbr),1,Archivo);
+                                        if(archivo == "principal") cout << "Se agrego espacio a la particion de manera exitosa" << endl;
+                                    }else{
+                                        cout << "Error: no es posible agregar espacio a la particion porque no hay suficiente espacio disponible a su derecha" << endl;
+                                    }
+                                }
+                            }
+                        }else{
+                            int p = MBR.mbr_partition[index].part_start + MBR.mbr_partition[index].part_size;
+                            int total = MBR.mbr_tamano + (int)sizeof(mbr);
+                            if((total-p) != 0){//Hay fragmentacion
+                                int fragmentacion = total - p;
+                                if(fragmentacion >= size_Bytes){
+                                    MBR.mbr_partition[index].part_size = MBR.mbr_partition[index].part_size + size_Bytes;
+                                    fseek(Archivo,0,SEEK_SET);
+                                    fwrite(&MBR,sizeof(mbr),1,Archivo);
+                                    if(archivo == "principal") cout << "Se agrego espacio a la particion de manera exitosa" << endl;
+                                }else{
+                                    cout << "Error: no es posible agregar espacio a la particion porque no hay suficiente espacio disponible a su derecha" << endl;
+                                }
+                            }else{
+                                cout << "Error: no es posible agregar espacio a la particion porque no hay espacio disponible a su derecha" << endl;
+                            }
+                        }
+                    }else{//Quitar espacio
+                        //Que no borre la particion
+                        if(size_Bytes >= MBR.mbr_partition[index_Extendida].part_size){
+                            cout << "Error: no es posible quitarle esta cantidad de espacio a la particion porque la borraria" << endl;
+                        }else{
+                            ebr EBR;
+                            fseek(Archivo, MBR.mbr_partition[index_Extendida].part_start,SEEK_SET);
+                            fread(&EBR,sizeof(ebr),1,Archivo);
+                            while((EBR.part_next != -1) && (ftell(Archivo) < (MBR.mbr_partition[index_Extendida].part_size + MBR.mbr_partition[index_Extendida].part_start))){
+                                fseek(Archivo,EBR.part_next,SEEK_SET);
+                                fread(&EBR,sizeof(ebr),1,Archivo);
+                            }
+                            int ultimaLogica = EBR.part_start+EBR.part_size;
+                            int aux = (MBR.mbr_partition[index_Extendida].part_start + MBR.mbr_partition[index_Extendida].part_size) - size_Bytes;
+                            if(aux > ultimaLogica){//No toca ninguna logica
+                                MBR.mbr_partition[index_Extendida].part_size = MBR.mbr_partition[index_Extendida].part_size - size_Bytes;
+                                fseek(Archivo,0,SEEK_SET);
+                                fwrite(&MBR,sizeof(mbr),1,Archivo);
+                                if(archivo == "principal") cout << "Se quito espacio a la particion de manera exitosa" << endl;
+                            }else{
+                                cout << "Error: si quita ese espacio danaria una logica" << endl;
+                            }
+                        }
+                    }
+                }
+            }else{//Posiblemente logica
+                if(index_Extendida != -1){
+                    int logica = buscarParticion_L(path, name);
+                    if(logica != -1){
+                        if(tipo == "add"){
+                            //Verificar que exista espacio libre a su derecha
+                            ebr EBR;
+                            fseek(Archivo,logica,SEEK_SET);
+                            fread(&EBR,sizeof(ebr),1,Archivo);
+
+                        }else{//Quitar
+                            //Verificar que no la elimine
+                            ebr EBR;
+                            fseek(Archivo,logica,SEEK_SET);
+                            fread(&EBR,sizeof(ebr),1,Archivo);
+                            if(size_Bytes >= EBR.part_size){
+                                cout << "Error: si quita ese espacio eliminaria la logica" << endl;
+                            }else{
+                                EBR.part_size = EBR.part_size - size_Bytes;
+                                fseek(Archivo,logica,SEEK_SET);
+                                fwrite(&EBR,sizeof(ebr),1,Archivo);
+                                if(archivo == "principal") cout << "Se quito espacio a la particion de manera exitosa" << endl;
+                            }
+                        }
+                    }else{
+                        cout << "Error: no se encuentra la particion" << endl;
+                    }
+                }else{
+                    cout << "Error: no se encuentra la particion a redimensionar" << endl;
+                }
+            }
+        }else{
+             cout << "Error: desmonte primero la particion para poder redimensionar" << endl;
+        }
+    fclose(Archivo);
+    }else{
+        cout << "Error: el disco donde se desea agregar/quitar unidades no existe" << endl;
+    }
+}
+
+int coman_fdisk::buscarParticion_L(QString path, QString name){
+    string auxPath = path.toStdString();
+    string auxName = name.toStdString();
+    FILE *Archivo;
+    if((Archivo = fopen(auxPath.c_str(),"rb+"))){
+        int extendida = -1;
+        mbr MBR;
+        fseek(Archivo,0,SEEK_SET);
+        fread(&MBR,sizeof(mbr),1,Archivo);
+        for(int i = 0; i < 4; i++){
+            if(MBR.mbr_partition[i].part_type == 'E'){
+                extendida = i;
+                break;
+            }
+        }
+        if(extendida != -1){
+            ebr EBR;
+            fseek(Archivo, MBR.mbr_partition[extendida].part_start,SEEK_SET);
+            while(fread(&EBR,sizeof(ebr),1,Archivo)!=0 && (ftell(Archivo) < MBR.mbr_partition[extendida].part_start + MBR.mbr_partition[extendida].part_size)){
+                if(strcmp(EBR.part_name, auxName.c_str()) == 0){
+                    return (ftell(Archivo) - sizeof(ebr));
+                }
+            }
+        }
+        fclose(Archivo);
+    }
+    return -1;
 }
 
 bool coman_fdisk::existe_archivo(QString path){

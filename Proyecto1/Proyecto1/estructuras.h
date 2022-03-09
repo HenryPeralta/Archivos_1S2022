@@ -23,7 +23,8 @@ enum comandos{
     TIPO = 13,
     TYPE = 14,
     DELETE = 15,
-    ADD = 16
+    ADD = 16,
+    MOUNT = 17
 
     //RMDISK = 2,
     //FDISK = 3,

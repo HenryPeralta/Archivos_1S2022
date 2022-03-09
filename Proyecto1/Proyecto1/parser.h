@@ -54,30 +54,31 @@ extern int yydebug;
     tk_rmdisk = 260,
     tk_exec = 261,
     tk_fdisk = 262,
-    tk_size = 263,
-    tk_fit = 264,
-    tk_unit = 265,
-    tk_path = 266,
-    tk_type = 267,
-    tk_delete = 268,
-    tk_name = 269,
-    tk_add = 270,
-    tk_ruta = 271,
-    tk_numero = 272,
-    tk_identificador = 273,
-    tk_cadena = 274,
-    tk_kilo = 275,
-    tk_mega = 276,
-    tk_bf = 277,
-    tk_ff = 278,
-    tk_wf = 279,
-    tk_archivo = 280,
-    tk_byte = 281,
-    tk_primaria = 282,
-    tk_extendida = 283,
-    tk_logica = 284,
-    tk_fast = 285,
-    tk_full = 286
+    tk_mount = 263,
+    tk_size = 264,
+    tk_fit = 265,
+    tk_unit = 266,
+    tk_path = 267,
+    tk_type = 268,
+    tk_delete = 269,
+    tk_name = 270,
+    tk_add = 271,
+    tk_ruta = 272,
+    tk_numero = 273,
+    tk_identificador = 274,
+    tk_cadena = 275,
+    tk_kilo = 276,
+    tk_mega = 277,
+    tk_bf = 278,
+    tk_ff = 279,
+    tk_wf = 280,
+    tk_archivo = 281,
+    tk_byte = 282,
+    tk_primaria = 283,
+    tk_extendida = 284,
+    tk_logica = 285,
+    tk_fast = 286,
+    tk_full = 287
   };
 #endif
 
@@ -92,7 +93,7 @@ union YYSTYPE
   class Nodo_arbol *tipo_nodo;
 
 
-#line 96 "parser.h"
+#line 97 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

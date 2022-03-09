@@ -11,10 +11,13 @@ SOURCES += \
         coman_exec.cpp \
         coman_fdisk.cpp \
         coman_mkdisk.cpp \
+        coman_mount.cpp \
         coman_rmdisk.cpp \
         estructuras.cpp \
         graficar.cpp \
+        list_particiones.cpp \
         main.cpp \
+        n_particiones.cpp \
         nodo_arbol.cpp \
         parser.cpp \
         scanner.cpp
@@ -32,9 +35,12 @@ HEADERS += \
     coman_exec.h \
     coman_fdisk.h \
     coman_mkdisk.h \
+    coman_mount.h \
     coman_rmdisk.h \
     estructuras.h \
     graficar.h \
+    list_particiones.h \
+    n_particiones.h \
     nodo_arbol.h \
     parser.h \
     scanner.h

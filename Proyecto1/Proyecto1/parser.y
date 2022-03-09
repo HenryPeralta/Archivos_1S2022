@@ -56,6 +56,7 @@
 %token <TEXT> tk_rmdisk
 %token <TEXT> tk_exec
 %token <TEXT> tk_fdisk
+%token <TEXT> tk_mount
 
 %token <TEXT> tk_size
 %token <TEXT> tk_fit
@@ -122,17 +123,54 @@ CONTENIDO: tk_mkdisk LPARAMETROS{
     | tk_exec tk_path tk_igual tk_ruta{
         $$= new Nodo_arbol("EXEC","");
         $$->add(*(new Nodo_arbol("path",$4)));
-        printf("Comando Exec correcto!!");
     }
     | tk_exec tk_path tk_igual tk_cadena{
         $$= new Nodo_arbol("EXEC","");
         $$->add(*(new Nodo_arbol("path",$4)));
-        printf("Comando Exec correcto!!");
     }
     | tk_fdisk LPARAMETROS_FDISK{
         $$= new Nodo_arbol("FDISK","");
         $$->add(*$2);
-        printf("Comando Fdisk correcto!!");
+    }
+    | tk_mount tk_path tk_igual tk_ruta tk_name tk_igual tk_identificador{
+        $$= new Nodo_arbol("MOUNT","");
+        $$->add(*(new Nodo_arbol("path",$4)));
+        $$->add(*(new Nodo_arbol("name",$7)));
+    }
+    | tk_mount tk_path tk_igual tk_ruta tk_name tk_igual tk_cadena{
+        $$= new Nodo_arbol("MOUNT","");
+        $$->add(*(new Nodo_arbol("path",$4)));
+        $$->add(*(new Nodo_arbol("name",$7)));
+    }
+    | tk_mount tk_path tk_igual tk_cadena tk_name tk_igual tk_identificador{
+        $$= new Nodo_arbol("MOUNT","");
+        $$->add(*(new Nodo_arbol("path",$4)));
+        $$->add(*(new Nodo_arbol("name",$7)));
+    }
+    | tk_mount tk_path tk_igual tk_cadena tk_name tk_igual tk_cadena{
+        $$= new Nodo_arbol("MOUNT","");
+        $$->add(*(new Nodo_arbol("path",$4)));
+        $$->add(*(new Nodo_arbol("name",$7)));
+    }
+    | tk_mount tk_name tk_igual tk_identificador tk_path tk_igual tk_ruta{
+        $$= new Nodo_arbol("MOUNT","");
+        $$->add(*(new Nodo_arbol("name",$4)));
+        $$->add(*(new Nodo_arbol("path",$7)));
+    }
+    | tk_mount tk_name tk_igual tk_cadena tk_path tk_igual tk_ruta{
+        $$= new Nodo_arbol("MOUNT","");
+        $$->add(*(new Nodo_arbol("name",$4)));
+        $$->add(*(new Nodo_arbol("path",$7)));
+    }
+    | tk_mount tk_name tk_igual tk_identificador tk_path tk_igual tk_cadena{
+        $$= new Nodo_arbol("MOUNT","");
+        $$->add(*(new Nodo_arbol("name",$4)));
+        $$->add(*(new Nodo_arbol("path",$7)));
+    }
+    | tk_mount tk_name tk_igual tk_cadena tk_path tk_igual tk_cadena{
+        $$= new Nodo_arbol("MOUNT","");
+        $$->add(*(new Nodo_arbol("name",$4)));
+        $$->add(*(new Nodo_arbol("path",$7)));
     }
   ;
 

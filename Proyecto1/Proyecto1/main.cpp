@@ -18,12 +18,14 @@
 #include "parser.h"
 #include "estructuras.h"
 #include "graficar.h"
+#include "list_particiones.h"
 
 //COMANDOS
 #include "coman_mkdisk.h"
 #include "coman_rmdisk.h"
 #include "coman_exec.h"
 #include "coman_fdisk.h"
+#include "coman_mount.h"
 
 using namespace std;
 
@@ -37,6 +39,7 @@ void Comando(char*);
 void recorrer_ast(Nodo_arbol*);
 void varios_exec(QList<Nodo_arbol> *hijos);
 bool existe_archivo(QString path);
+List_particiones *lista = new List_particiones();
 
 
 int main()
@@ -98,6 +101,13 @@ void recorrer_ast(Nodo_arbol *raiz){
         Nodo_arbol temp = raiz->hijos.at(0);
         coman_fdisk *fdisk = new coman_fdisk();
         fdisk->recorrido_fdisk(&temp);
+        break;
+    }case MOUNT:{
+        QList<Nodo_arbol> temp = raiz->hijos;
+        coman_mount *mount = new coman_mount();
+        mount->lista = lista;
+        mount->recorrer_mount(&temp);
+        lista->mostrarLista();
         break;
     }
     default:{
