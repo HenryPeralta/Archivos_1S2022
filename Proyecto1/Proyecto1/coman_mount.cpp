@@ -35,8 +35,8 @@ void coman_mount::recorrer_mount(QList<Nodo_arbol> *hijos){
 }
 
 void coman_mount::crear_mount(QString path, QString name){
-    std::cout<<"El valor de path es: "<<path.toStdString()<<"\n";
-    std::cout<<"El valor de name es: "<<name.toStdString()<<"\n";
+    //std::cout<<"El valor de path es: "<<path.toStdString()<<"\n";
+    //std::cout<<"El valor de name es: "<<name.toStdString()<<"\n";
 
     int indexP = buscarParticion_P_E(path, name);
     if(indexP != -1){
@@ -56,7 +56,7 @@ void coman_mount::crear_mount(QString path, QString name){
                 cout<<"Error: la particion ya esta montada"<<endl;
             }else{
                 int num = lista->buscarNumero(path, name);
-                cout<<"numero que deberia llevar: "<<num<<endl;
+                //cout<<"numero que deberia llevar: "<<num<<endl;
                 char auxLetra = static_cast<char>(letra);
                 string id = "89";
                 id += to_string(num) + auxLetra;

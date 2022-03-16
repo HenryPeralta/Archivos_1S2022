@@ -57,6 +57,9 @@
 %token <TEXT> tk_exec
 %token <TEXT> tk_fdisk
 %token <TEXT> tk_mount
+%token <TEXT> tk_unmount
+%token <TEXT> tk_mkfs
+%token <TEXT> tk_rep
 
 %token <TEXT> tk_size
 %token <TEXT> tk_fit
@@ -66,12 +69,15 @@
 %token <TEXT> tk_delete
 %token <TEXT> tk_name
 %token <TEXT> tk_add
+%token <TEXT> tk_id
+%token <TEXT> tk_fs
 
 
 %token <TEXT> tk_ruta
 %token <TEXT> tk_numero
 %token <TEXT> tk_identificador
 %token <TEXT> tk_cadena
+%token <TEXT> tk_clave
 
 %token <TEXT> tk_kilo
 %token <TEXT> tk_mega
@@ -85,6 +91,11 @@
 %token <TEXT> tk_logica
 %token <TEXT> tk_fast
 %token <TEXT> tk_full
+%token <TEXT> tk_2fs
+%token <TEXT> tk_3fs
+
+%token <TEXT> tk_mbr
+%token <TEXT> tk_disk
 
 /* No Terminales, que tambien podemos especificar su tipo */
 %type <tipo_nodo> I
@@ -96,6 +107,9 @@
 %type <tipo_nodo> UNIDADES_FDISK
 %type <tipo_nodo> TIPO_PARTICION
 %type <tipo_nodo> VDELETE
+%type <tipo_nodo> VALORES_FS
+%type <tipo_nodo> LIST_REPO REPO
+%type <tipo_nodo> VALOR_NAME
 %%
 
 /**********************
@@ -171,6 +185,78 @@ CONTENIDO: tk_mkdisk LPARAMETROS{
         $$= new Nodo_arbol("MOUNT","");
         $$->add(*(new Nodo_arbol("name",$4)));
         $$->add(*(new Nodo_arbol("path",$7)));
+    }
+    | tk_unmount tk_id tk_igual tk_clave{
+        $$= new Nodo_arbol("UNMOUNT", "");
+        $$->add(*(new Nodo_arbol("id", $4)));
+    }
+    | tk_unmount tk_id tk_igual tk_cadena{
+        $$= new Nodo_arbol("UNMOUNT", "");
+        $$->add(*(new Nodo_arbol("id", $4)));
+    }
+    | tk_mkfs tk_id tk_igual tk_clave{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("id", $4)));
+    }
+    | tk_mkfs tk_id tk_igual tk_clave tk_type tk_igual VDELETE{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("id", $4)));
+        $$->add(*(new Nodo_arbol("type", $7->valor)));
+    }
+    | tk_mkfs tk_id tk_igual tk_clave tk_fs tk_igual VALORES_FS{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("id", $4)));
+        $$->add(*(new Nodo_arbol("fs", $7->valor)));
+    }
+    | tk_mkfs tk_type tk_igual VDELETE tk_id tk_igual tk_clave{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("type", $4->valor)));
+        $$->add(*(new Nodo_arbol("id", $7)));
+    }
+    | tk_mkfs tk_fs tk_igual VALORES_FS tk_id tk_igual tk_clave{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("fs", $4->valor)));
+        $$->add(*(new Nodo_arbol("id", $7)));
+    }
+    | tk_mkfs tk_id tk_igual tk_clave tk_type tk_igual VDELETE tk_fs tk_igual VALORES_FS{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("id", $4)));
+        $$->add(*(new Nodo_arbol("type", $7->valor)));
+        $$->add(*(new Nodo_arbol("fs", $10->valor)));
+    }
+    | tk_mkfs tk_id tk_igual tk_clave tk_fs tk_igual VALORES_FS tk_type tk_igual VDELETE{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("id", $4)));
+        $$->add(*(new Nodo_arbol("fs", $7->valor)));
+        $$->add(*(new Nodo_arbol("type", $10->valor)));
+    }
+    | tk_mkfs tk_type tk_igual VDELETE tk_id tk_igual tk_clave tk_fs tk_igual VALORES_FS{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("type", $4->valor)));
+        $$->add(*(new Nodo_arbol("id", $7)));
+        $$->add(*(new Nodo_arbol("fs", $10->valor)));
+    }
+    | tk_mkfs tk_type tk_igual VDELETE tk_fs tk_igual VALORES_FS tk_id tk_igual tk_clave{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("type", $4->valor)));
+        $$->add(*(new Nodo_arbol("fs", $7->valor)));
+        $$->add(*(new Nodo_arbol("id", $10)));
+    }
+    | tk_mkfs tk_fs tk_igual VALORES_FS tk_id tk_igual tk_clave tk_type tk_igual VDELETE{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("fs", $4->valor)));
+        $$->add(*(new Nodo_arbol("id", $7)));
+        $$->add(*(new Nodo_arbol("type", $10->valor)));
+    }
+    | tk_mkfs tk_fs tk_igual VALORES_FS tk_type tk_igual VDELETE tk_id tk_igual tk_clave{
+        $$= new Nodo_arbol("MKFS", "");
+        $$->add(*(new Nodo_arbol("fs", $4->valor)));
+        $$->add(*(new Nodo_arbol("type", $7->valor)));
+        $$->add(*(new Nodo_arbol("id", $10)));
+    }
+    | tk_rep LIST_REPO{
+        $$= new Nodo_arbol("REP","");
+        $$->add(*$2);
     }
   ;
 
@@ -295,6 +381,47 @@ VDELETE: tk_fast {
   }
   | tk_full {
         $$=new Nodo_arbol("tipo","full");
+  }
+  ;
+
+VALORES_FS: tk_2fs{
+        $$= new Nodo_arbol("tipo","2fs");
+  }
+  | tk_3fs{
+        $$= new Nodo_arbol("tipo","3fs");
+  }
+  ;
+
+LIST_REPO: LIST_REPO REPO{
+        $$=$1;
+        $$->add(*$2);
+  }
+  | REPO{
+        $$ = new Nodo_arbol("PARAMETRO","");
+        $$->add(*$1);
+  }
+  ;
+
+REPO: tk_name tk_igual VALOR_NAME {
+        $$ = new Nodo_arbol("name","");
+        $$->add(*$3);
+  }
+  | tk_path tk_igual tk_ruta {
+        $$ = new Nodo_arbol("path",$3);
+  }
+  | tk_path tk_igual tk_cadena {
+        $$ = new Nodo_arbol("path",$3);
+  }
+  | tk_id tk_igual tk_clave {
+        $$ = new Nodo_arbol("id",$3);
+  }
+  ;
+
+VALOR_NAME: tk_mbr {
+        $$ = new Nodo_arbol("tipo","mbr");
+  }
+  | tk_disk {
+        $$ = new Nodo_arbol("tipo","disk");
   }
   ;
 

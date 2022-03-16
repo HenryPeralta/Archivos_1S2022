@@ -24,60 +24,14 @@ enum comandos{
     TYPE = 14,
     DELETE = 15,
     ADD = 16,
-    MOUNT = 17
-
-    //RMDISK = 2,
-    //FDISK = 3,
-    //MOUNT = 4,
-    //UNMOUNT = 5,
-    //REP = 6,
-    //EXEC = 7,
-    //PARAMETRO = 8,
-
-    //PATH = 9,
-    //ID = 10,
-    //NAME = 11,
-    //TIPO = 12,
-    //FIT = 13,
-    //UNIT = 14,
-    //SIZE = 15,
-    //TYPE = 16,
-    //DELETE = 17,
-    //ADD = 18,
-    //AJUSTE = 19,
-    //UNIDAD = 20,
-
-    //MKFS = 21,
-    //LOGIN = 22,
-    //LOGOUT= 23,
-    //MKGRP = 24,
-    //RMGRP = 25,
-    //MKUSR = 26,
-    //RMUSR = 27,
-    //CHMOD = 28,
-    //MKFILE = 29,
-    //CAT = 30,
-    //REM =31,
-    //EDIT = 32,
-    //REN = 33,
-    //MKDIR = 34,
-    //CP = 35,
-    //MV = 36,
-    //FIND = 37,
-    //CHOWN = 38,
-    //CHGRP = 39,
-    //PAUSE = 40,
-
-    //RUTA=41,
-    //USR=42,
-    //PWD=43,
-    //GRP=44,
-
-    //UGO=45,
-    //R=46,
-    //P=47,
-    //CONT=48,
-    //PFILE=49
+    MOUNT = 17,
+    UNMOUNT = 18,
+    ID = 19,
+    MKFS = 20,
+    FS = 21,
+    REP = 22,
+    MBR = 23,
+    DISK =24
 };
 
 typedef struct {
@@ -106,6 +60,84 @@ typedef struct{
     char part_name[16];
 }ebr;
 
+typedef struct{
+    int s_filesystem_type;
+    int s_inodes_count;
+    int s_blocks_count;
+    int s_free_blocks_count;
+    int s_free_inodes_count;
+    time_t s_mtime;
+    time_t s_umtime;
+    int s_mnt_count;
+    int s_magic;
+    int s_inode_size;
+    int s_block_size;
+    int s_firts_ino;
+    int s_first_blo;
+    int s_bm_inode_start;
+    int s_bm_block_start;
+    int s_inode_start;
+    int s_block_start;
+}superbloque;
+
+typedef struct{
+    int i_uid;
+    int i_gid;
+    int i_size;
+    time_t i_atime;
+    time_t i_ctime;
+    time_t i_mtime;
+    int i_block;
+    char i_type;
+    int i_perm;
+}inodos;
+
+//BLOQUES CARPETAS
+typedef struct{
+    char b_name [12];
+    int b_inodo;
+}bcontent;
+
+typedef struct{
+    bcontent b_content [4];
+}bcarpeta;
+
+//BLOQUE ARCHIVOS
+typedef struct{
+    char b_content[64];
+}barchivo;
+
+//BLOQUE APUNTADOR
+typedef struct{
+    int b_pointers[16];
+}bapuntador;
+
+typedef struct{
+    char operacion[16];
+    int next;
+    char usuario[16];
+    char tipo;
+    char nombre[150];
+    char content[230];
+    time_t date;
+}journal;
+
+typedef struct{
+    int last;
+    int max;
+}info_journal;
+
+typedef struct{
+    int bloque_padre;
+    int posicion;
+    int inodo;
+}inodo_dato;
+
+typedef struct{
+    short lectura;
+    short escritura;
+    short ejecucion;
+}permiso;
 
 class estructuras
 {

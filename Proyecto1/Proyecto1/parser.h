@@ -55,30 +55,40 @@ extern int yydebug;
     tk_exec = 261,
     tk_fdisk = 262,
     tk_mount = 263,
-    tk_size = 264,
-    tk_fit = 265,
-    tk_unit = 266,
-    tk_path = 267,
-    tk_type = 268,
-    tk_delete = 269,
-    tk_name = 270,
-    tk_add = 271,
-    tk_ruta = 272,
-    tk_numero = 273,
-    tk_identificador = 274,
-    tk_cadena = 275,
-    tk_kilo = 276,
-    tk_mega = 277,
-    tk_bf = 278,
-    tk_ff = 279,
-    tk_wf = 280,
-    tk_archivo = 281,
-    tk_byte = 282,
-    tk_primaria = 283,
-    tk_extendida = 284,
-    tk_logica = 285,
-    tk_fast = 286,
-    tk_full = 287
+    tk_unmount = 264,
+    tk_mkfs = 265,
+    tk_rep = 266,
+    tk_size = 267,
+    tk_fit = 268,
+    tk_unit = 269,
+    tk_path = 270,
+    tk_type = 271,
+    tk_delete = 272,
+    tk_name = 273,
+    tk_add = 274,
+    tk_id = 275,
+    tk_fs = 276,
+    tk_ruta = 277,
+    tk_numero = 278,
+    tk_identificador = 279,
+    tk_cadena = 280,
+    tk_clave = 281,
+    tk_kilo = 282,
+    tk_mega = 283,
+    tk_bf = 284,
+    tk_ff = 285,
+    tk_wf = 286,
+    tk_archivo = 287,
+    tk_byte = 288,
+    tk_primaria = 289,
+    tk_extendida = 290,
+    tk_logica = 291,
+    tk_fast = 292,
+    tk_full = 293,
+    tk_2fs = 294,
+    tk_3fs = 295,
+    tk_mbr = 296,
+    tk_disk = 297
   };
 #endif
 
@@ -93,7 +103,7 @@ union YYSTYPE
   class Nodo_arbol *tipo_nodo;
 
 
-#line 97 "parser.h"
+#line 107 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

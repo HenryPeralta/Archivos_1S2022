@@ -26,6 +26,9 @@
 #include "coman_exec.h"
 #include "coman_fdisk.h"
 #include "coman_mount.h"
+#include "coman_unmount.h"
+#include "coman_mkfs.h"
+#include "coman_rep.h"
 
 using namespace std;
 
@@ -108,6 +111,25 @@ void recorrer_ast(Nodo_arbol *raiz){
         mount->lista = lista;
         mount->recorrer_mount(&temp);
         lista->mostrarLista();
+        break;
+    }case UNMOUNT:{
+        Nodo_arbol temp = raiz->hijos.at(0);
+        coman_unmount *unmount = new coman_unmount();
+        unmount->lista = lista;
+        unmount->recorrido_unmount(&temp);
+        lista->mostrarLista();
+        break;
+    }case MKFS:{
+        QList<Nodo_arbol> temp = raiz->hijos;
+        coman_mkfs *mkfs = new coman_mkfs();
+        mkfs->lista=lista;
+        mkfs->recorrer_mkfs(&temp);
+        break;
+    }case REP:{
+        Nodo_arbol temp = raiz->hijos.at(0);
+        coman_rep *rep = new coman_rep();
+        rep->lista=lista;
+        rep->recorrer_rep(&temp);
         break;
     }
     default:{

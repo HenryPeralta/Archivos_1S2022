@@ -64,6 +64,27 @@ int Nodo_arbol::getTipo(){
     if(this->tipo == "MOUNT"){
         return 17;
     }
+    if(this->tipo == "UNMOUNT"){
+        return 18;
+    }
+    if(this->tipo == "id"){
+        return 19;
+    }
+    if(this->tipo == "MKFS"){
+        return 20;
+    }
+    if(this->tipo == "fs"){
+        return 21;
+    }
+    if(this->tipo == "REP"){
+        return 22;
+    }
+    if(this->tipo == "mbr"){
+        return 23;
+    }
+    if(this->tipo == "disk"){
+        return 24;
+    }
     return 0;
 }
 
