@@ -12,14 +12,16 @@ Para empezar deberá colocar el comando mkdisk el cual tendrá como parámetros 
  ![enter image description here](https://i.ibb.co/LQFy65s/3.jpg)
  ## FDISK
  El comando fdisk sirve para agregar particiones primarias, extendidas y lógicas. Por disco solo pueden haber 4 particiones y solo puede haber un extendida y para las lógicas es obligatorio que haya un extendida. Las particiones creadas no pueden exceder el tamaño del disco y si son lógicas tampoco pueden exceder el tamaño de la partición extendida. los parámetros para este comando son size, unit, path, type, fit, delete, name y add, con estos comandos podemos crear particiones, agregar o quitarle espacio a una partición y también podemos eliminar la partición.
+
  ![enter image description here](https://i.ibb.co/4FkJmDf/4.jpg)
-![enter image description here](https://i.ibb.co/PhN9N7x/5.jpg)
+ ![enter image description here](https://i.ibb.co/PhN9N7x/5.jpg)
  ## MOUNT
  Este comando montara una partición del disco en el sistema y para cada partición montada se le creara un id único. Los parámetros para este comando son path y name donde path es la dirección del disco y name es el nombre de la partición
 ![enter image description here](https://i.ibb.co/7GkKsk0/6.jpg) 
 
  ## UNMOUNT
  El comando unmount desmonta la particion creada anteriormente. Los parámetros del comando unmount son solamente el id, que es el id generado por el comando mount.
+
  ![enter image description here](https://i.ibb.co/BP6D2t6/7.jpg)
  
  ## MKFS
@@ -32,10 +34,11 @@ Para empezar deberá colocar el comando mkdisk el cual tendrá como parámetros 
  ![enter image description here](https://i.ibb.co/TrJZS5b/9.jpg)
 
   ## LOGOUT
-  Este comando cierra la sesión
-  ![enter image description here](https://i.ibb.co/sFrNPgh/10.jpg)
+  Este comando cierra la sesión.
+
+ ![enter image description here](https://i.ibb.co/sFrNPgh/10.jpg)
   
-   ## REP
-   Con este comando se podrán ver los reportes creados   del mbr y el disk. los parámetros de este comando son name, path y id. donde name tendrá el nombre del reporte, path tiene la dirección donde este se creara y id es el id de la partición.
-   ![enter image description here](https://i.ibb.co/7yCPX43/11.jpg)
+ ## REP
+ Con este comando se podrán ver los reportes creados   del mbr y el disk. los parámetros de este comando son name, path y id. donde name tendrá el nombre del reporte, path tiene la dirección donde este se creara y id es el id de la partición.
+ ![enter image description here](https://i.ibb.co/7yCPX43/11.jpg)
    
