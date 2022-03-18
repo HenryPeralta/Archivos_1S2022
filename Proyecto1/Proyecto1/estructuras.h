@@ -31,7 +31,11 @@ enum comandos{
     FS = 21,
     REP = 22,
     MBR = 23,
-    DISK =24
+    DISK =24,
+    LOGIN = 25,
+    USUARIO = 26,
+    PASSWORD = 27,
+    LOGOUT = 28
 };
 
 typedef struct {

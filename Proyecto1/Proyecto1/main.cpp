@@ -29,6 +29,7 @@
 #include "coman_unmount.h"
 #include "coman_mkfs.h"
 #include "coman_rep.h"
+#include "coman_login.h"
 
 using namespace std;
 
@@ -43,6 +44,14 @@ void recorrer_ast(Nodo_arbol*);
 void varios_exec(QList<Nodo_arbol> *hijos);
 bool existe_archivo(QString path);
 List_particiones *lista = new List_particiones();
+void logout();
+
+int id_usuario=-1;
+QString usuario = "";
+QString id_mount = "";
+QString grupo = "";
+int id_grupo = -1;
+n_particiones part_global;
 
 
 int main()
@@ -131,6 +140,14 @@ void recorrer_ast(Nodo_arbol *raiz){
         rep->lista=lista;
         rep->recorrer_rep(&temp);
         break;
+    }case LOGIN:{
+        Nodo_arbol temp = raiz->hijos.at(0);
+        coman_login *login = new coman_login(lista, &id_usuario, &usuario, &id_mount, &grupo, &id_grupo, &part_global);
+        login->recorrer_login(&temp);
+        break;
+    }case LOGOUT:{
+        logout();
+        break;
     }
     default:{
         cout<<"Error: comando no reconocido"<<endl;
@@ -178,6 +195,18 @@ bool existe_archivo(QString path){
         return true;
     } else {
         return false;
+    }
+}
+
+void logout(){
+    if(id_usuario == -1){
+        cout<<"No hay ninguna sesion iniciada"<<endl;
+    }else{
+        part_global.path = "";
+        id_usuario = -1;
+        usuario = "";
+        id_mount = "";
+        cout<<"Se cerro la sesion con exito!!"<<endl;
     }
 }
 

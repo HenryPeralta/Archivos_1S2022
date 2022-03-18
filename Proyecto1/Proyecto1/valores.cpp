@@ -280,6 +280,14 @@ void valores::escribirInodo(FILE *disco, inodos inodo, int inode_start, int posi
     fwrite(&inodo, sizeof(inodos), 1, disco);
 }
 
+barchivo valores::getBloqueArchivo(FILE *disco, int block_start, int posicion){
+    barchivo bloque;
+    fseek(disco, block_start + (SIZE_BLOCKS * posicion), SEEK_SET);//Posicionamos el puntero al inicio del archivo
+    fread(&bloque, 64, 1, disco);
+    //cout<<endl<<"Bloque Get: "<<bloque.b_content[64]<<bloque.b_content[65]<<bloque.b_content[66]<<endl;
+    return bloque;
+}
+
 QString valores::getPathString(QStringList path){
     QString txt;
     foreach (QString directory, path) {
@@ -1565,4 +1573,84 @@ journal valores::getJournal(int posicion){
     fseek(Archivo, inicio_journaling + (posicion * sizeof(journal)), SEEK_SET);//Posicionamos el puntero al inicio de bitmaps
     fread(&find, sizeof(journal), 1, Archivo);
     return find;
+}
+
+int valores::iniciarSesion(QString user, QString psw){
+    QListIterator<QString> rows = getDatosUsers();
+    QHash<QString, int> grupos;
+    while (rows.hasNext()) {
+        QString dato = rows.next();
+        if(dato.size() == 0){break;}
+        QStringList lista = dato.split(',');
+        if(QString::compare(lista.value(1).trimmed(), "u", Qt::CaseInsensitive) == 0){
+            int id = lista.value(0).trimmed().toInt();
+            if(user.compare(lista.value(3).trimmed(), Qt::CaseSensitive) == 0 &&
+               psw.compare(lista.value(4).trimmed(), Qt::CaseSensitive) == 0 &&  id > 0){
+                group = lista.value(2).trimmed();
+                group_id = grupos[lista.value(2).trimmed()];
+                return id;
+            }
+        }
+        else{
+            grupos[lista.value(2).trimmed()] = lista.value(0).trimmed().toInt();
+        }
+    }
+    return -1;
+}
+
+QListIterator<QString> valores::getDatosUsers(){
+    inodos inodo_users = getInodo(Archivo, super.s_inode_start, 1);
+    QString content = getFileContent(inodo_users);
+    QListIterator<QString> rows(content.split('\n'));
+    return rows;
+}
+
+QString valores::getFileContent_(int espacio_apuntador, int nivel){
+    QString retornar = "";
+    if(nivel >= 0 && nivel <= 3){
+        if(nivel == 0){
+            if(espacio_apuntador >= 0){
+                //Hay bloques contenidos
+                barchivo contenido = getBloqueArchivo(Archivo, super.s_block_start, espacio_apuntador);
+                QString addcontent(contenido.b_content);
+                retornar += addcontent.mid(0,64);
+                //cout<<"<INIT>"<<addcontent.toStdString()<<"<END>"<<endl<<endl;
+            }
+        }
+        else{
+            if(espacio_apuntador >= 0){
+                //Sacamos el bloque carpeta
+                bapuntador b_apuntador = getBloqueApuntador(Archivo, super.s_block_start, espacio_apuntador);
+                for (int i = 0; i < 16; i++) {
+                    int verificar_espacio = b_apuntador.b_pointers[i];
+                    if(verificar_espacio == -1){break;}
+                    retornar += getFileContent_(verificar_espacio, nivel-1);
+                }
+            }
+        }
+    }
+    return retornar;
+}
+
+QString valores:: getFileContent(inodos inodo){
+    if(inodo.i_type == '0'){return "";}
+    //Obtenemos los 16 apuntadores del inodo actual
+    bapuntador inodo_apuntador = getBloqueApuntador(Archivo, super.s_block_start, inodo.i_block);
+    QString resultado = "";
+    //Buscamos espacios ocupados en los 16 apuntadores
+    for (int i = 0; i < 16; i++) {
+        if(i <= 12){
+            resultado += getFileContent_(inodo_apuntador.b_pointers[i], 0);
+        }
+        else if(i == 13){
+            resultado += getFileContent_(inodo_apuntador.b_pointers[i], 1);
+        }
+        else if(i == 14){
+            resultado += getFileContent_(inodo_apuntador.b_pointers[i], 2);
+        }
+        else if(i == 15){
+            resultado += getFileContent_(inodo_apuntador.b_pointers[i], 3);
+        }
+    }
+    return resultado;
 }

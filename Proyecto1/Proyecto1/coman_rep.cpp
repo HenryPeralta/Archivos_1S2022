@@ -124,9 +124,9 @@ void coman_rep::graficarMBR(QString path, QString destino, QString extension){
                 }
                 char status[3];
                 if(MBR.mbr_partition[i].part_status == '0'){
-                    strcpy(status, "0");
+                    strcpy(status, "1");
                 }else if(MBR.mbr_partition[i].part_status == '2'){
-                    strcpy(status, "2");
+                    strcpy(status, "1");
                 }
                 fprintf(graphDot,"<tr>  <td bgcolor=\"white\"><b>part_status_%d</b></td> <td bgcolor=\"white\"><font color='black'>%s</font></td>  </tr>\n",(i+1), status);
                 fprintf(graphDot,"<tr>  <td bgcolor=\"white\"><b>part_type_%d</b></td> <td bgcolor=\"white\"><font color='black'>%c</font></td>  </tr>\n",(i+1), MBR.mbr_partition[i].part_type);
@@ -151,9 +151,9 @@ void coman_rep::graficarMBR(QString path, QString destino, QString extension){
                     fprintf(graphDot, "<tr>  <td width=\'150\' bgcolor=\"gold\"><b>Nombre</b></td> <td width=\'150\' bgcolor=\"gold\"><b>Valor</b></td>  </tr>\n");
                     char status[3];
                     if(EBR.part_status == '0'){
-                        strcpy(status, "0");
+                        strcpy(status, "1");
                     }else if(EBR.part_status == '2'){
-                        strcpy(status, "2");
+                        strcpy(status, "1");
                     }
                     fprintf(graphDot, "<tr>  <td bgcolor=\"white\"><b>part_status_1</b></td> <td bgcolor=\"white\"><font color='black'>%s</font></td>  </tr>\n",status);
                     fprintf(graphDot, "<tr>  <td bgcolor=\"white\"><b>part_fit_1</b></td> <td bgcolor=\"white\"><font color='black'>%c</font></td>  </tr>\n", EBR.part_fit);
@@ -189,7 +189,7 @@ void coman_rep::graficarDisk(QString path, QString destino, QString extension){
         graphDot = fopen("grafica.dot", "w");
         fprintf(graphDot,"digraph G{\n\n");
         fprintf(graphDot, "tbl [\n    shape=box\n    label=<\n");
-        fprintf(graphDot, "<table border=\'0\' cellborder=\'2\' width=\'600\' height=\"200\" color=\'blue\'>\n");
+        fprintf(graphDot, "<table border=\'0\' cellborder=\'2\' width=\'600\' height=\"200\" color=\'black\'>\n");
         fprintf(graphDot, "<tr>\n");
         fprintf(graphDot, "<td height=\'200\' width=\'100\'> MBR </td>\n");
         mbr MBR;
@@ -229,7 +229,7 @@ void coman_rep::graficarDisk(QString path, QString destino, QString extension){
                         }
                     }else{
                         ebr EBR;
-                        fprintf(graphDot,"<td  height=\'200\' width=\'%.1f\'>\n     <table border=\'0\'  height=\'200\' WIDTH=\'%.1f\' cellborder=\'1\'>\n",porcentaje_real,porcentaje_real);
+                        fprintf(graphDot,"<td  height=\'200\' width=\'%.1f\'>\n <table border=\'0\' height=\'200\' WIDTH=\'%.1f\' cellborder=\'1\'>\n",porcentaje_real,porcentaje_real);
                         fprintf(graphDot,"<tr><td height=\'60\' colspan=\'15\'>EXTENDIDA</td>  </tr>\n <tr>\n");
                         fseek(Archivo, MBR.mbr_partition[i].part_start,SEEK_SET);
                         fread(&EBR,sizeof(ebr),1,Archivo);

@@ -60,6 +60,8 @@
 %token <TEXT> tk_unmount
 %token <TEXT> tk_mkfs
 %token <TEXT> tk_rep
+%token <TEXT> tk_login
+%token <TEXT> tk_logout
 
 %token <TEXT> tk_size
 %token <TEXT> tk_fit
@@ -71,7 +73,8 @@
 %token <TEXT> tk_add
 %token <TEXT> tk_id
 %token <TEXT> tk_fs
-
+%token <TEXT> tk_usuario
+%token <TEXT> tk_password
 
 %token <TEXT> tk_ruta
 %token <TEXT> tk_numero
@@ -110,6 +113,7 @@
 %type <tipo_nodo> VALORES_FS
 %type <tipo_nodo> LIST_REPO REPO
 %type <tipo_nodo> VALOR_NAME
+%type <tipo_nodo> LIST_LOGIN LOGIN TIPO_PASS
 %%
 
 /**********************
@@ -257,6 +261,14 @@ CONTENIDO: tk_mkdisk LPARAMETROS{
     | tk_rep LIST_REPO{
         $$= new Nodo_arbol("REP","");
         $$->add(*$2);
+    }
+    | tk_login LIST_LOGIN{
+        $$= new Nodo_arbol("LOGIN","");
+        $$->add(*$2);
+    }
+    | tk_logout{
+        $$= new Nodo_arbol("LOGOUT","");
+        $$->add(*(new Nodo_arbol("logout","logout")));
     }
   ;
 
@@ -422,6 +434,41 @@ VALOR_NAME: tk_mbr {
   }
   | tk_disk {
         $$ = new Nodo_arbol("tipo","disk");
+  }
+  ;
+
+LIST_LOGIN: LIST_LOGIN LOGIN {
+        $$ = $1;
+        $$->add(*$2);
+  }
+  | LOGIN {
+        $$ = new Nodo_arbol("PARAMETRO", "");
+        $$->add(*$1);
+  }
+  ;
+
+LOGIN: tk_usuario tk_igual tk_identificador {
+        $$ = new Nodo_arbol("usuario", $3);
+  }
+  | tk_usuario tk_igual tk_cadena {
+        $$ = new Nodo_arbol("usuario", $3);
+  }
+  | tk_password tk_igual TIPO_PASS {
+        $$ = new Nodo_arbol("password", $3->valor);
+  }
+  | tk_id tk_igual tk_clave {
+        $$ = new Nodo_arbol("id", $3);
+  }
+  ;
+
+TIPO_PASS: tk_identificador {
+        $$ = new Nodo_arbol("tipo", $1);
+  }
+  | tk_numero {
+        $$ = new Nodo_arbol("tipo", $1);
+  }
+  | tk_cadena {
+        $$ = new Nodo_arbol("tipo", $1);
   }
   ;
 

@@ -10,6 +10,7 @@ CONFIG -= app_bundle
 SOURCES += \
         coman_exec.cpp \
         coman_fdisk.cpp \
+        coman_login.cpp \
         coman_mkdisk.cpp \
         coman_mkfs.cpp \
         coman_mount.cpp \
@@ -38,6 +39,7 @@ DISTFILES += \
 HEADERS += \
     coman_exec.h \
     coman_fdisk.h \
+    coman_login.h \
     coman_mkdisk.h \
     coman_mkfs.h \
     coman_mount.h \

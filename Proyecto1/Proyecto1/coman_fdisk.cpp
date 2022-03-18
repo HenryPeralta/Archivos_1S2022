@@ -620,8 +620,8 @@ void coman_fdisk::eliminarParticion(QString path, QString name, string tipo_dele
     FILE *Archivo;
     if((Archivo = fopen(auxPath.c_str(), "rb+"))){
         //Verificar que la particion no este montada
-        bool mount = lista->buscarNodo(path,name);
-        if(!mount){
+        //bool mount = lista->buscarNodo(path,name);
+        //if(!mount){
             mbr MBR;
             fseek(Archivo,0,SEEK_SET);
             fread(&MBR,sizeof (mbr),1,Archivo);
@@ -716,11 +716,9 @@ void coman_fdisk::eliminarParticion(QString path, QString name, string tipo_dele
                         cout << "Error: no se encuentra la particion a eliminar" << endl;
                     }
                 }
-
-
-        }else{
-            cout << "ERROR: desmote primero la particion para poder eliminarlo" << endl;
-        }
+        //}else{
+            //cout << "ERROR: desmote primero la particion para poder eliminarlo" << endl;
+        //}
     fclose(Archivo);
     }else{
         cout << "Error: el disco donde se va a eliminar no existe" << endl;
@@ -728,10 +726,10 @@ void coman_fdisk::eliminarParticion(QString path, QString name, string tipo_dele
 }
 
 void coman_fdisk::comando_add(QString path, QString name, int add, string unit, QString archivo){
-    std::cout<<"El valor de path para add es: "<<path.toStdString()<<"\n";
-    std::cout<<"El valor de name para add es: "<<name.toStdString()<<"\n";
-    std::cout<<"El valor de add es: "<<add<<"\n";
-    std::cout<<"El valor de unit para add es: "<<unit<<"\n";
+    //std::cout<<"El valor de path para add es: "<<path.toStdString()<<"\n";
+    //std::cout<<"El valor de name para add es: "<<name.toStdString()<<"\n";
+    //std::cout<<"El valor de add es: "<<add<<"\n";
+    //std::cout<<"El valor de unit para add es: "<<unit<<"\n";
 
     string auxPath = path.toStdString();
     string auxNombre = name.toStdString();
@@ -759,8 +757,8 @@ void coman_fdisk::comando_add(QString path, QString name, int add, string unit, 
     FILE *Archivo;
     if((Archivo = fopen(auxPath.c_str(), "rb+"))){
         //Verificar que la particion no este montada
-        bool mount = lista->buscarNodo(path,name);
-        if(!mount){
+        //bool mount = lista->buscarNodo(path,name);
+        //if(!mount){
             mbr MBR;
             fseek(Archivo,0,SEEK_SET);
             fread(&MBR,sizeof(mbr),1,Archivo);
@@ -940,9 +938,9 @@ void coman_fdisk::comando_add(QString path, QString name, int add, string unit, 
                     cout << "Error: no se encuentra la particion a redimensionar" << endl;
                 }
             }
-        }else{
-             cout << "Error: desmonte primero la particion para poder redimensionar" << endl;
-        }
+        //}else{
+             //cout << "Error: desmonte primero la particion para poder redimensionar" << endl;
+        //}
     fclose(Archivo);
     }else{
         cout << "Error: el disco donde se desea agregar/quitar unidades no existe" << endl;

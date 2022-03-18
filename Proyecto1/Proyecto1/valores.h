@@ -30,6 +30,8 @@ public:
     info_journal journal_info;
     QByteArray bitmap_inodo;
     int inicio_byte;
+    QString group;
+    int group_id;
 
     superbloque super;
 
@@ -65,6 +67,10 @@ public:
     void actualizarJournal();
     static void getSuperBlock(FILE*disco, n_particiones part_montada, superbloque &superBlock);
     journal getJournal(int posicion);
+    int iniciarSesion(QString user, QString psw);
+    QListIterator<QString> getDatosUsers();
+    QString getFileContent_(int espacio_apuntador, int nivel);
+    QString getFileContent(inodos inodo);
 
 private:
     static int calNoStructs(int size_particion, char part_type, string fs);
@@ -83,6 +89,7 @@ private:
     void getBitmaps();
     void getJournal();
     static void crearCarpetaRaiz(FILE *disco, superbloque &s_block, int inicio_byte);
+    static barchivo getBloqueArchivo(FILE *disco, int block_start, int posicion);
 };
 
 #endif // VALORES_H

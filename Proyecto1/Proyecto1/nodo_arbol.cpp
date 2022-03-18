@@ -85,6 +85,18 @@ int Nodo_arbol::getTipo(){
     if(this->tipo == "disk"){
         return 24;
     }
+    if(this->tipo == "LOGIN"){
+        return 25;
+    }
+    if(this->tipo == "usuario"){
+        return 26;
+    }
+    if(this->tipo == "password"){
+        return 27;
+    }
+    if(this->tipo == "LOGOUT"){
+        return 28;
+    }
     return 0;
 }
 
