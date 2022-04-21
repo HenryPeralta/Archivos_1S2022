@@ -132,6 +132,7 @@ void coman_mkdisk::ejecutarDisco(int psize, string pfit, string punit, QString p
 void coman_mkdisk::creandoRuta(QString path){
     QString aux = obtener_path(path);
     string comando = "sudo mkdir -p \'"+aux.toStdString()+"\'";
+    cout << comando << endl;
     system(comando.c_str());
     string comando2 = "sudo chmod -R 777 \'"+aux.toStdString()+"\'";
     system(comando2.c_str());
@@ -153,6 +154,7 @@ QString coman_mkdisk::obtener_path(QString path){
         res += aux.substr(0,pos)+"/";
         aux.erase(0,pos + delimiter.length());
     }
+    cout << res << endl;
     return QString::fromStdString(res);
 }
 
