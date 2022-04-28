@@ -564,6 +564,8 @@ void coman_fdisk::crearParticionLogica(QString path, QString name, int size, str
                         EBR.part_status = '0';
                         EBR.part_fit = auxFit;
                         EBR.part_start = ftell(Archivo) - sizeof(ebr); //Para regresar al inicio de la extendida
+                        cout << "Este es el valor de ftell: "<<ftell(Archivo)<< endl;
+                        cout << "Este es el valor de ftell - sizeof(ebr): "<<ftell(Archivo) - sizeof(ebr)<< endl;
                         EBR.part_size = size_bytes;
                         EBR.part_next = -1;
                         strcpy(EBR.part_name, name.toStdString().c_str());

@@ -12,6 +12,8 @@ func AnalizadorTexto(texto string) {
 		comandos.Recorrido_mkdisk(texto)
 	} else if palabras[0] == "RMDISK" || palabras[0] == "rmdisk" {
 		comandos.Recorrido_rmdisk(texto)
+	} else if palabras[0] == "FDISK" || palabras[0] == "fdisk" {
+		comandos.Recorrido_fdisk(texto)
 	} else {
 		fmt.Println("Comando no reconocido")
 	}

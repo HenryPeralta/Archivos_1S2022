@@ -59,11 +59,6 @@ func Recorrido_mkdisk(comando string) {
 }
 
 func ejecutarDisco(psize int, pfit string, punit string, ppath string) {
-	//fmt.Println("El mdisk esta correcto!!")
-	//fmt.Println("El valor size es: ", psize)
-	//fmt.Println("El valor fit es: ", pfit)
-	//fmt.Println("El valor unit es: ", punit)
-	//fmt.Println("El valor path es: ", ppath)
 
 	comillaDer := strings.TrimRight(ppath, "\"")
 	comillaIzq := strings.TrimLeft(comillaDer, "\"")
@@ -82,13 +77,13 @@ func ejecutarDisco(psize int, pfit string, punit string, ppath string) {
 	binary.Write(&binario, binary.BigEndian, s)
 
 	if punit == "k" || punit == "K" {
-		prueba.mbr_tamano = int64(psize * 1024)
+		prueba.Mbr_tamano = int64(psize * 1024)
 
 		for i := 0; i < psize*1024; i++ {
 			escribirBytes(file, binario.Bytes())
 		}
 	} else if punit == "m" || punit == "M" {
-		prueba.mbr_tamano = int64(psize * 1024 * 1024)
+		prueba.Mbr_tamano = int64(psize * 1024 * 1024)
 
 		for i := 0; i < psize*1024*1024; i++ {
 			escribirBytes(file, binario.Bytes())
@@ -99,11 +94,11 @@ func ejecutarDisco(psize int, pfit string, punit string, ppath string) {
 	time := tiempo.String()
 
 	for t := 0; t < 19; t++ {
-		prueba.mbr_fecha_creacion[t] = time[t]
+		prueba.Mbr_fecha_creacion[t] = time[t]
 	}
 
 	numeroRandom := rand.Intn(100-1) + 1
-	prueba.mbr_dsk_signature = int64(numeroRandom)
+	prueba.Mbr_dsk_signature = int64(numeroRandom)
 
 	var auxfit byte = 0
 
@@ -115,16 +110,16 @@ func ejecutarDisco(psize int, pfit string, punit string, ppath string) {
 		auxfit = 'W'
 	}
 
-	prueba.dsk_fit = auxfit
+	prueba.Dsk_fit = auxfit
 
 	for p := 0; p < 4; p++ {
-		prueba.mbr_partition[p].part_status = '0'
-		prueba.mbr_partition[p].part_type = '0'
-		prueba.mbr_partition[p].part_fit = '0'
-		prueba.mbr_partition[p].part_size = 0
-		prueba.mbr_partition[p].part_start = -1
+		prueba.Mbr_partition[p].Part_status = '0'
+		prueba.Mbr_partition[p].Part_type = '0'
+		prueba.Mbr_partition[p].Part_fit = '0'
+		prueba.Mbr_partition[p].Part_size = 0
+		prueba.Mbr_partition[p].Part_start = -1
 		for n := 0; n < 16; n++ {
-			prueba.mbr_partition[p].part_name[n] = '0'
+			prueba.Mbr_partition[p].Part_name[n] = '0'
 		}
 	}
 
