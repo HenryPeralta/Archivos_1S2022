@@ -261,7 +261,7 @@ void coman_rep::graficarDisk(QString path, QString destino, QString extension){
                             fprintf(graphDot,"<td height=\'140\'> Ocupado %.1f%c</td>",porcentaje_real,'%');
                         }
                         fprintf(graphDot,"</tr>\n </table>\n </td>\n");
-                        if(i!=3){
+                        /*if(i!=3){
                             int p1 = MBR.mbr_partition[i].part_start + MBR.mbr_partition[i].part_size;
                             int p2 = MBR.mbr_partition[i+1].part_start;
                             if(MBR.mbr_partition[i+1].part_start != -1){
@@ -281,7 +281,7 @@ void coman_rep::graficarDisk(QString path, QString destino, QString extension){
                                 double porcentaje_aux = (porcentaje_real*500)/100;
                                 fprintf(graphDot, "<td height=\'200\' width=\'%.1f\'>LIBRE<br/> %.1f%c</td>\n",porcentaje_aux, porcentaje_real, '%');
                             }
-                        }
+                        }*/
                     }
                 }else{
                     fprintf(graphDot,"<td height=\'200\' width=\'%.1f\'>LIBRE <br/> %.1f%c</td>\n",porcentaje_aux,porcentaje_real,'%');
@@ -293,6 +293,7 @@ void coman_rep::graficarDisk(QString path, QString destino, QString extension){
         fclose(Archivo);
         string comando = "dot -T"+extension.toStdString()+" grafica.dot -o "+destino.toStdString();
         system(comando.c_str());
+        cout<<"Este es la extension: "<<extension.toStdString()<<endl;
         cout << "Reporte disk generado con exito" << endl;
     }else{
         cout << "Error: al crear el reporte disk" << endl;

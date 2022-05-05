@@ -114,3 +114,19 @@ func mostrarLista(lista *Lista) {
 		aux = aux.siguiente
 	}
 }
+
+func GetDireccion(id string, lista *Lista) string {
+	aux := lista.primero
+	for aux != nil {
+		var tempID string = "89"
+		var aux_l byte = byte(aux.n_particiones.Letra)
+		auxLetra := string([]byte{aux_l})
+		auxNum := strconv.Itoa(aux.n_particiones.Num)
+		tempID += auxNum + auxLetra
+		if id == tempID {
+			return aux.n_particiones.Path
+		}
+		aux = aux.siguiente
+	}
+	return "null"
+}

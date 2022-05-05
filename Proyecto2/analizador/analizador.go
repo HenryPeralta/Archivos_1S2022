@@ -23,6 +23,8 @@ func AnalizadorTexto(texto string) {
 		Coman_exec(texto)
 	} else if palabras[0] == "MOUNT" || palabras[0] == "mount" {
 		comandos.Recorrido_mount(texto, lista)
+	} else if palabras[0] == "rep" || palabras[0] == "REP" {
+		comandos.Recorrido_rep(texto, lista)
 	} else {
 		fmt.Println("Comando no reconocido")
 	}
