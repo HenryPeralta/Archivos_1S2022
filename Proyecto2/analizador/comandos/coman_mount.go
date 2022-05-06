@@ -91,7 +91,7 @@ func crear_mount(ppath string, pname string, lista *Lista) {
 		file.Close()
 		//var lista *Lista = New_Lista()
 		num := BuscarNumero(aux_path, aux_nombre, lista)
-		fmt.Println(num)
+		//fmt.Println(num)
 		if num == -1 {
 			fmt.Println("Error: La particion ya esta montada")
 		} else {
@@ -100,7 +100,7 @@ func crear_mount(ppath string, pname string, lista *Lista) {
 			auxLetra := string([]byte{aux_l})
 			id := "89"
 			id += strconv.Itoa(num) + auxLetra
-			fmt.Println(id)
+			//fmt.Println(id)
 			var n *Nparticiones = New_Nparticiones(aux_path, aux_nombre, aux_l, num, temp_type /*,temp_part*/)
 			Insertar(n, lista)
 			fmt.Println("Particion montada con exito")
@@ -139,7 +139,7 @@ func crear_mount(ppath string, pname string, lista *Lista) {
 				auxLetra := string([]byte{aux_l})
 				id := "89"
 				id += strconv.Itoa(num) + auxLetra
-				fmt.Println(id)
+				//fmt.Println(id)
 				var n *Nparticiones = New_Nparticiones(aux_path, aux_nombre, aux_l, num, 'l' /*temp_part*/)
 				Insertar(n, lista)
 				fmt.Println("Particion montada con exito")

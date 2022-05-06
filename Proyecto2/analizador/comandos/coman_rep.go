@@ -11,10 +11,11 @@ import (
 	"unsafe"
 )
 
-func Recorrido_rep(comando string, lista *Lista) {
+func Recorrido_rep(comando string, lista *Lista, lista_tree *ListaF) {
 	sinsalto := strings.TrimRight(comando, "\n")
 	coman := strings.Split(sinsalto, " ")
 	lista_simple := lista
+	listaTree := lista_tree
 	var bandera_error bool = false
 	var bandera_path bool = false
 	var bandera_name bool = false
@@ -53,15 +54,17 @@ func Recorrido_rep(comando string, lista *Lista) {
 		fmt.Println("Error: El parametro -id es obligatorio")
 	}
 	if !bandera_error {
-		ejecutar_rep(valor_name, valor_path, valor_id, valor_ruta, lista_simple)
+		ejecutar_rep(valor_name, valor_path, valor_id, valor_ruta, lista_simple, listaTree)
 	}
 }
 
-func ejecutar_rep(pname string, ppath string, pid string, pruta string, lista *Lista) {
+func ejecutar_rep(pname string, ppath string, pid string, pruta string, lista *Lista, lista_tree *ListaF) {
 	/*fmt.Println("El valor de pname: ", pname)
 	fmt.Println("El valor de ppath: ", ppath)
 	fmt.Println("El valor de pid: ", pid)
 	fmt.Println("El valor de pruta: ", pruta)*/
+
+	listaTree := lista_tree
 
 	comillaDer := strings.TrimRight(ppath, "\"")
 	comillaIzq := strings.TrimLeft(comillaDer, "\"")
@@ -74,14 +77,14 @@ func ejecutar_rep(pname string, ppath string, pid string, pruta string, lista *L
 		crearRuta(cambio_ruta)
 		if pname == "disk" {
 			graficarDisco(path, cambio_ruta, ext)
+		} else if pname == "tree" {
+			graficarTree(path, cambio_ruta, ext, listaTree)
+			//generarReporteTree(listaTree)
 		}
 	}
 }
 
 func graficarDisco(ppaht string, destino string, extension string) {
-	fmt.Println("El valor de ppath: ", ppaht)
-	fmt.Println("El valor de destino: ", destino)
-	fmt.Println("El valor de extension: ", extension)
 
 	var destinoDot string
 
@@ -209,22 +212,22 @@ func generarReporteDisk(ppath string) string {
 						for {
 							if sizeEbr != 0 && (offset < (mbr.Mbr_partition[i].Part_size + mbr.Mbr_partition[i].Part_start)) {
 								parcial = ebr.Part_size
-								fmt.Println("Este es el valor parcial", parcial)
+								//fmt.Println("Este es el valor parcial", parcial)
 								porcentaje_real = (float64(parcial) * 100) / float64(total)
-								fmt.Println("Este es el valor porcentaje real", porcentaje_real)
+								//fmt.Println("Este es el valor porcentaje real", porcentaje_real)
 								if porcentaje_real != 0 {
-									fmt.Println("Este es el valor de ebr.Part_status:", ebr.Part_status)
+									//fmt.Println("Este es el valor de ebr.Part_status:", ebr.Part_status)
 									if ebr.Part_status != '1' {
 										rama += "<td height=\"" + "140" + "\">EBR</td>\n"
 										rama += "<td height=\"" + "140" + "\">LOGICA<br/>" + fmt.Sprintf("%v", porcentaje_real) + "</td>\n"
 									} else {
 										rama += "<td height=\"" + "150" + "\">LIBRE<br/>" + fmt.Sprintf("%v", porcentaje_real) + "</td>\n"
 									}
-									fmt.Println("Este es el valor de ebr.Part_next:", ebr.Part_next)
+									//fmt.Println("Este es el valor de ebr.Part_next:", ebr.Part_next)
 									if ebr.Part_next == -1 {
 										parcial = (mbr.Mbr_partition[i].Part_start + mbr.Mbr_partition[i].Part_size) - (ebr.Part_start + ebr.Part_size)
 										porcentaje_real = (float64(parcial) * 100) / float64(total)
-										fmt.Println("Este es el valor de porcentaje real", porcentaje_real)
+										//fmt.Println("Este es el valor de porcentaje real", porcentaje_real)
 										if porcentaje_real != 0 {
 											rama += "<td height=\"" + "150" + "\">LIBRE <br/>" + fmt.Sprintf("%v", porcentaje_real) + "</td>\n"
 										}
@@ -268,12 +271,6 @@ func generarReporteDisk(ppath string) string {
 		}
 	}
 	rama += "</tr> \n </table> \n>];\n\n}"
-
-	//En esta parte esta el uso correcto de graphviz
-	/*rama := "digraph G{\n\n"
-	rama += "node[shape=\"" + "box" + "\",style=\"" + "filled" + "\",fillcolor=\"" + "#EEEEE" + "\",color=\"" + "#EEEEE" + "\"];"
-	rama += "	node1" + "1" + "[label=\"" + "1" + "\"];"
-	rama += "}\n"*/
 
 	return rama
 }
@@ -322,4 +319,71 @@ func obtener_extension(path string) string {
 	}
 
 	return aux_delimitador
+}
+
+func graficarTree(ppaht string, destino string, extension string, lista_tree *ListaF) {
+	var destinoDot string
+	listaTree := lista_tree
+
+	for i := 0; i < len(destino); i++ {
+		destinoDot += string(destino[i])
+		if string(destino[i]) == "." {
+			break
+		}
+	}
+
+	destinoDot += "dot"
+
+	_, err := os.Stat(destinoDot)
+	if os.IsNotExist(err) {
+		var archivo, err = os.Create(destinoDot)
+		if err != nil {
+			fmt.Println("No se pudo crear la ruta")
+		}
+
+		_, err = archivo.WriteString(generarReporteTree(listaTree))
+		if err != nil {
+			fmt.Println("No se pudo escribir en el archivo")
+		}
+
+		err = archivo.Sync()
+		if err != nil {
+			return
+		}
+
+		defer archivo.Close()
+		fmt.Println("Archivo creado")
+	}
+
+	comando1 := "-T" + extension
+
+	out, err := exec.Command("dot", comando1, destinoDot, "-o", destino).Output()
+	if err != nil {
+		fmt.Println("No pude ejecutar el comando")
+	}
+
+	err = os.Remove(destinoDot)
+	if err != nil {
+		fmt.Println("Error al eliminar el .dot")
+	}
+
+	fmt.Println(string(out))
+}
+
+func generarReporteTree(lista_tree *ListaF) string {
+	rama := "digraph G{\n"
+	rama += "node [shape=box]"
+	rama += "rankdir=LR;\n"
+	aux := lista_tree.primero
+	for aux != nil {
+		pathline := aux.n_files.Path
+		param := strings.Split(pathline, "/")
+		for j := 1; j < len(param)-1; j++ {
+			rama += "\"" + param[j] + "\"" + "->" + "\"" + param[j+1] + "\"" + "\n"
+		}
+		aux = aux.siguiente
+	}
+	rama += "}"
+	//fmt.Println(rama)
+	return rama
 }

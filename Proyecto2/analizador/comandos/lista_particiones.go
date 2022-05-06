@@ -130,3 +130,20 @@ func GetDireccion(id string, lista *Lista) string {
 	}
 	return "null"
 }
+
+func getParticionMontada(id string, lista *Lista) Nparticiones {
+	aux := lista.primero
+	for aux != nil {
+		var tempID string = "89"
+		var aux_l byte = byte(aux.n_particiones.Letra)
+		auxLetra := string([]byte{aux_l})
+		auxNum := strconv.Itoa(aux.n_particiones.Num)
+		tempID += auxNum + auxLetra
+		if tempID == id {
+			return *aux.n_particiones
+		}
+		aux = aux.siguiente
+	}
+	var temp *Nparticiones = New_Nparticiones("", "", 0, 0, 0)
+	return *temp
+}
